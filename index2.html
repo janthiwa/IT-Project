@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container .item {
+            background-color: lightblue;
+        }
+        .button {
+            background-color: darkgreen;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button.active {
+            background-color: blue;
+        }
+        .button.warning {
+            background-color: red;
+        }
+        .button:hover {
+            background-color: orange;
+        }
+        .button:focus {
+            background-color: blueviolet;
+        }
+        input:focus {
+            border: 10px solid pink;
+        }
+        .item1 + .item2 {
+            background-color: lightskyblue;
+        }
+        input[type="text"] {
+            border: 2px solid gray;
+            padding: 10px;
+        }
+        </style>
+</head>
+<body>
+    <div class="container">
+        Container Content
+        <div class="item">
+            Item Content
+    </div>
+    </div>
+    <div class="footer-container">
+        Container Content
+        <div class="item">
+            Item Content
+    </div>
+    </div>
+    <input type="text">
+    <button class="button">Click Me</button>
+    <button class="button active">Delete</button>
+    <button class="button warning">Warning</button>
+
+    <div class="item1">Item 1</div>
+    <div class="item2">Item 2</div>
+
+    <input type="text" name="sample-input">
+    <input type="text" name="another-input">
+    <input type="text" name="number-input"> <br>
+
+</body>
+</html>

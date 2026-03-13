@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    /* 1. แต่งใคร? (id,class, DOM) 2.แต่งอะไร ? */
+    @font-face {
+    font-family: 'Kanit';
+    src: url(./fonts/Kanit-Regular.ttf);
+    }
+
+        body{
+    background-color: gray;
+    font-family: 'Kanit';
+ }
+        #register-form {
+    color: white;
+    margin-left: 20px;
+    padding-left: 10px;
+    border: 1px solid black;
+    text-align: center;
+    }
+    .form-control {
+    border: 2px solid black;
+    margin-bottom: 10px;
+    }
+
+
+</style>
+    <!--- ส่วนนี้จะไม่ถูกแสดงผลที่หน้าเว็บ --->
+</head>
+<body>
+    <!--- ส่วนนี้จะแสดงผลที่หน้าเว็บ --->
+    <div id="register-form">Register Formxxx</div>
+    ชื่อ : <input class="form-control" type="text">
+    นามสกุล : <input class="form-control" type="text">
+    อายุ : <input type="number" name="age" min="0" max="150"> <br>
+    เพศ :
+    <input type="radio" name="gender" value="mele"> ชาย
+    <input type="radio" name="gender" value="female"> หญิง <br>
+    งานอดิเรก : <br>
+    <input type="checkbox" name="hobby" value="reading" > อ่านหนังสือ
+    <input type="checkbox" name="hobby" value="traveling" > ท่องเที่ยว
+    <input type="checkbox" name="hobby" value="music" > ฟังเพลง <br>
+    คำอธิบายตัวเอง : <br>
+    <textarea name="description" rows="4" cols="50"></textarea> <br>
+    <input type="submit" value="Submit">
+</body>
+</html>
