@@ -1,0 +1,29 @@
+// คำสั่ง ดู CONTAINER ว่ามีอะไรบ้าง 
+docker ps --all
+// Run CONTAINER
+docker run hello-world
+docker run busybox ls
+docker run busybox ping google.com
+// Run nginx
+node index.js
+docker run nginx
+docker run -p 80:80 nginx
+docker run -p 9000:80 nginx
+docker run -d -p 9000:80 nginx
+// Stop Run CONTAINER
+docker stop CONTAINER ID
+docker stop rm CONTAINER ID CONTAINER ID
+// ดาวน์โหลด Image ที่ชื่อ bosybox
+docker pull busybox
+// สร้าง CONTAINER ใหม่
+docker create busybox ping google.com
+// สั่งให้ CONTAINER เริ่มทำงาน
+docker start CONTAINER ID
+// ลบ CONTAINER ออก
+docker rm CONTAINER ID
+// ล้างข้อมูล Docker ที่ไม่ได้ใช้งาน
+docker system prune
+// เข้าไป Run คำสั่งภายใน CONTAINER
+docker exec -it CONTAINER ID sh
+docker exec -it CONTAINER ID bash
+docker exec -it CONTAINER ID ls

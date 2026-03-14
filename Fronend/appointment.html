@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Form</title>
+    <link rel="stylesheet" href="styles.css"> </head>
+<body>
+    <div class="container">
+        <a href="user.html">จัดการคนไข้</a>
+        <div class="header">Appointment form</div>
+
+       <div class="flex form-input">
+       <div class="header-form">เลือกคนไข้</div>
+            <select class="form" id="userSelect" name="user_id">
+            <option value="">--- กรุณาเลือกคนไข้ ---</option>
+        </select>
+        </div>
+
+        <div class="flex form-input">
+            <div class="header-form">ชื่อคุณหมอ</div>
+            <input class="form" type="text" name="doctor_name">
+        </div>
+
+        <div class="flex form-input">
+            <div class="header-form">วันที่นัดหมาย</div>
+            <input class="form" type="date" name="app_date">
+        </div>
+
+        <div class="flex form-input">
+            <div class="header-form">เวลานัดหมาย</div>
+            <input class="form" type="time" name="app_time">
+        </div>
+        <div class="flex form-input">
+        <div class="header-form">สถานที่นัดหมาย</div>
+
+        <select class="form" name="location" id="locationSelect">
+           <option value="">--- กรุณาเลือกสถานที่ ---</option>
+           <option value="แผนกอายุรกรรม">แผนกอายุรกรรม</option>
+           <option value="แผนกศัลยกรรม">แผนกศัลยกรรม</option>
+           <option value="ห้องตรวจฉุกเฉิน">ห้องตรวจฉุกเฉิน</option>
+        </select>
+        </div>
+
+        <div class="form-group">
+        <div class="header-form">หมายเหตุ</div>
+           <textarea class="form" name="note" rows="3" placeholder="ระบุเหตุผลการนัดหมาย..."></textarea>
+        </div>
+
+        <div id="message"></div>
+        <div class="center">
+           <button onclick="window.location.href='index.html'"
+           class="button btn-secondary">กลับไปบันทึกข้อมูลผู้ป่วย</button>
+           <button class="button" onclick="submitAppointment()">ยืนยันการนัดหมาย</button>
+        </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="appointment.js"></script> </body>
+</html>

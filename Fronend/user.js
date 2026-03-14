@@ -1,0 +1,41 @@
+const BASE_URL = 'http://localhost:8000';
+
+window.onload = async () => {
+    await loadData();
+};
+
+const loadData = async () => {
+try {
+        const response = await axios.get(`${BASE_URL}/users`);
+        const userDOM = document.getElementById('user');
+
+        userDOM.innerHTML = ''; 
+
+        // 2. สร้างข้อมูลใหม่จาก Database
+        response.data.forEach(user => {
+            const div = document.createElement('div');
+            div.className = 'user-item';
+            div.innerHTML = `
+            <span>${user.id} ${user.firstname} ${user.lastname}</span>
+            <button onclick="location.href='index.html?id=${user.id}'">Edit</button>
+            <button class="delete-btn" onclick="deleteUser(${user.id})">Delete</button>
+            `;
+            userDOM.appendChild(div);
+        });
+} catch (error) {
+        console.error('โหลดข้อมูลไม่สำเร็จ:', error);
+}
+};
+
+// 3. ฟังก์ชันลบที่ฉลาดขึ้น (ลบเสร็จโหลดใหม่ทันที)
+const deleteUser = async (id) => {
+    if (confirm('แน่ใจนะว่าจะลบคนนี้')) {
+    try {
+        await axios.delete(`${BASE_URL}/users/${id}`);
+        alert('ลบข้อมูลเรียบร้อยแล้ว');
+        await loadData();
+    } catch (error) {
+            console.error('ลบไม่สำเร็จ:', error);
+    }
+    }
+};
