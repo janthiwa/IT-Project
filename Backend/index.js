@@ -39,7 +39,7 @@ const validateData = (userData) => {
     if (!userData.age) {
         errors.push('กรุณากรอกอายุผู้ป่วย');
     }
-        if (!userData.checkup_date) {
+    if (!userData.checkup_date) {
         errors.push('กรุณาระบุวันที่เข้าตรวจ');
     }
     if (!userData.gender) {
@@ -105,48 +105,114 @@ app.get('/users/:id', async (req, res) => {
 //PUT /users/:id สำหรับแก้ไขข้อมูล user ที่มี id ตรงกับที่ส่งมา
 app.put('/users/:id', async (req, res) => {
     try {
-        let id = req.params.id
-        let updatedUser = req.body;
-        const results = await conn.query('UPDATE users SET ? WHERE id = ?', [updatedUser, id])
-        if (results[0].affectedRows == 0) {
-            throw { statusCode: 404, message: 'User not found' };
-        }
-        res.json({
-            message: 'User updated successfully',
-            data: updatedUser
-        });
+        const { id } = req.params;
+        const { firstname, lastname, age, gender, checkup_date, congenital_disease, diagnosis } = req.body;
+        
+        const query = `
+            UPDATE users 
+            SET firstname = ?, lastname = ?, age = ?, gender = ?, checkup_date = ?, congenital_disease = ?, diagnosis = ? 
+            WHERE id = ?`;
+        
+        await conn.query(query, [firstname, lastname, age, gender, checkup_date, congenital_disease, diagnosis, id]);
+        res.json({ message: 'แก้ไขข้อมูลสำเร็จแล้ว' });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: 'Backend งอแง: ' + error.message });
     }
-    catch (error) {
-        console.error('Error updating user:', error.message);
-        let statusCode = error.statusCode || 500;
-        res.status(statusCode).json({
-            message: 'Error updating user',
-            error: error.message
-        });
-    }
-})
+});
 
 // DELETE /users/:id สำหรับลบ user ที่มี id ตรงกับที่ส่งมา
 app.delete('/users/:id', async (req, res) => {
     try {
-        let id = req.params.id
-        const results = await conn.query('DELETE FROM users WHERE id = ?', id)
+        let id = req.params.id;
+        const results = await conn.query('DELETE FROM users WHERE id = ?', [id]);
         if (results[0].affectedRows == 0) {
             throw { statusCode: 404, message: 'User not found' };
-        }   
-        res.json({
-            message: 'User deleted successfully'
-        });
-    }
-    catch (error) {
+        }
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
         console.error('Error deleting user:', error.message);
         let statusCode = error.statusCode || 500;
-        res.status(statusCode).json({
-            message: 'Error deleting user',
-            error: error.message
-        });
+        res.status(statusCode).json({ message: 'Error deleting user', error: error.message });
     }
-})
+});
+
+// ส่วนของการลบนัดหมาย (Appointments)
+app.delete('/appointments/:id', async (req, res) => {
+    try {
+        let id = req.params.id;
+        const results = await conn.query('DELETE FROM appointments WHERE id = ?', [id]);
+        if (results[0].affectedRows == 0) {
+            throw { statusCode: 404, message: 'Appointment not found' };
+        }
+        res.json({ message: 'Appointment deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting appointment:', error.message);
+        let statusCode = error.statusCode || 500;
+        res.status(statusCode).json({ message: 'Error deleting appointment', error: error.message });
+    }
+});
+
+// ส่วนการจัดการนัดหมาย (Appointments)
+// 1. Route สำหรับบันทึกข้อมูลนัดหมายใหม่
+app.post('/appointments', async (req, res) => {
+    try {
+        const { user_id, doctor_name, app_date, app_time, location, note } = req.body;
+        const query = `INSERT INTO appointments (user_id, doctor_name, app_date, app_time, location, note) VALUES (?, ?, ?, ?, ?, ?)`;
+        
+        // ตรงนี้สำคัญมากจ๊ะ!
+        const [results] = await conn.query(query, [user_id, doctor_name, app_date, app_time, location, note]);
+        
+        // คุณหนูต้องส่ง results กลับไปแบบนี้ เพื่อให้หน้าบ้านเห็น insertId
+        res.status(201).json(results); 
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// ดึงรายละเอียดใบนัดหมายแบบรวมข้อมูลผู้ป่วย
+app.get('/appointments', async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                a.*, 
+                u.firstname, u.lastname 
+            FROM appointments a
+            JOIN users u ON a.user_id = u.id
+            ORDER BY a.app_date ASC, a.app_time ASC
+        `;
+        const [results] = await conn.query(query);
+        res.json(results); // ส่ง Array ของนัดหมายทั้งหมดกลับไป
+    } catch (error) {
+        console.error('ดึงข้อมูลนัดหมายรวมพลาด:', error);
+        res.status(500).json({ message: 'เซิร์ฟเวอร์งอแง' });
+    }
+});
+
+app.get('/appointment-card/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const query = `
+            SELECT 
+                a.*, 
+                u.firstname, u.lastname, u.age, u.congenital_disease
+            FROM appointments a
+            JOIN users u ON a.user_id = u.id
+            WHERE a.id = ? 
+        `; // <--- เราเพิ่ม WHERE เพื่อเจาะจงเฉพาะ ID นั้น ๆ
+        
+        const [results] = await conn.query(query, [id]);
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'ไม่พบนัดหมายนี้' });
+        }
+        res.json(results[0]); // ส่งข้อมูลคนเดียวกลับไป
+    } catch (error) {
+        console.error('ดึงใบนัดหมายพลาด:', error);
+        res.status(500).json({ message: 'เซิร์ฟเวอร์งอแง' });
+    }
+});
 
 app.listen(port, async () => {
     await initMySQL();

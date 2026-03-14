@@ -1,7 +1,7 @@
 /* ตั้งค่าพื้นฐาน */
 * {
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
 }
 
 body {
@@ -115,24 +115,152 @@ textarea {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    gap: 15px;
 }
 
 .button {
-    background-color: #4CAF50;
+    background-color: #3498db;
     color: white;
-    padding: 12px 30px;
+    padding: 10px 25px;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
-    width: 100%;
+    width: auto;
 }
 
 .button:hover {
-    background-color: #45a049;
+    background-color: #2980b9;
 }
 
 .button:active {
     transform: scale(0.98);
 }
+
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 12px;       /* ปรับขนาดให้พอดี */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    
+    /* 🚨 แก้ 3 บรรทัดนี้ คือหัวใจสำคัญจ๊ะ! */
+    width: 80px !important;    /* บังคับความกว้างให้คงที่ 80 พิกเซล */
+    max-width: 80px;           /* ห้ามยาวเกินนี้เด็ดขาด */
+    display: inline-block;     /* สั่งให้หยุดทำตัวเป็นบล็อกที่กินพื้นที่ทั้งแถว */
+}
+
+.appointment-item {
+    background: #f9f9f9;
+    padding: 15px;
+    border-left: 5px solid #3498db;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.app-info {
+    line-height: 1.6;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    align-items: flex-start;
+}
+
+.header-form {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+@media print {
+    .print-btn, 
+    .footer-link-container, 
+    .back-link,
+    a, 
+    p.footer-link-container {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+.print-btn-small {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.print-btn-small:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+/* จัดระเบียบกลุ่มปุ่มให้เรียงกันสวยๆ */
+.button-group {
+    display: flex;
+    flex-direction: column; /* ให้ปุ่มเรียงกันเป็นแนวตั้ง */
+    gap: 10px;              /* เว้นระยะห่างระหว่างปุ่ม 10px เท่ากันเป๊ะ */
+    margin-left: 15px;      /* ขยับห่างจากตัวหนังสือ */
+    min-width: 100px;       /* กำหนดความกว้างขั้นต่ำให้ปุ่มดูเท่ากัน */
+}
+
+/* ปรับแต่งปุ่มทั้งสองให้ขนาดเท่ากัน */
+.delete-btn, .print-btn-small {
+    width: 100%;            /* ให้ปุ่มกว้างเต็มพื้นที่กลุ่มปุ่ม จะได้เท่ากันทุกอัน */
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;     /* ขอบมนๆ */
+    font-family: 'Kanit', sans-serif;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;       /* เวลาเอาเมาส์ไปวางจะดูนุ่มนวล */
+}
+
+/* สีปุ่มยกเลิก */
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* สีปุ่มพิมพ์ */
+.print-btn-small {
+    background-color: #3498db;
+    color: white;
+}
+
+/* เอฟเฟกต์เวลาเมาส์ไปชี้ */
+.delete-btn:hover { background-color: #c0392b; }
+.print-btn-small:hover { background-color: #2980b9; }

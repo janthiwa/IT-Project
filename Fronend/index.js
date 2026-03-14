@@ -25,6 +25,39 @@ const validateData = (userData) => {
     }
 }
 
+window.onload = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const editId = urlParams.get('id');
+
+    if (editId) {
+        try {
+            // ดึงข้อมูลเก่า (อย่าลืมเช็ค Port Backend ของคุณหนูนะจ๊ะ)
+            const response = await axios.get(`http://localhost:8000/users/${editId}`);
+            const user = response.data;
+
+            // เอาข้อมูลมาหยอดใส่ช่องตาม name ใน HTML จ๊ะ
+            document.querySelector('input[name="firstName"]').value = user.firstname || '';
+            document.querySelector('input[name="lastName"]').value = user.lastname || '';
+            document.querySelector('input[name="age"]').value = user.age || '';
+            document.querySelector('input[name="checkup_date"]').value = user.checkup_date || '';
+            
+            // เลือกเพศให้ตรง
+            const genderRadio = document.querySelector(`input[name="gender"][value="${user.gender}"]`);
+            if (genderRadio) genderRadio.checked = true;
+
+            // หยอดประวัติโรค (Textarea)
+            document.querySelector('textarea[name="diagnosis"]').value = user.diagnosis || '';
+
+            // เปลี่ยนชื่อปุ่ม "ส่งข้อมูล" ให้เป็นโหมดแก้ไข
+            const submitBtn = document.querySelector('button[onclick="submitData()"]');
+            if (submitBtn) submitBtn.innerText = 'ยืนยันการแก้ไขข้อมูล';
+
+        } catch (error) {
+            console.error('ดึงข้อมูลเก่ามาโชว์ไม่ได้:', error);
+        }
+    }
+};
+
 const submitData = async () => {
 let firstNameDOM = document.querySelector('input[name=firstname]');
     let lastNameDOM = document.querySelector('input[name=lastname]');
@@ -99,6 +132,44 @@ let firstNameDOM = document.querySelector('input[name=firstname]');
     messageDOM.style.display = 'block';
     }
 }
+
+const submitAndGoToAppoint = async () => {
+    // 1. ดึงข้อมูลจากฟอร์มมาใส่ใน Object (ให้เหมือนกับใน submitData ของคุณหนูนะจ๊ะ)
+    const userData = {
+        firstname: document.querySelector('input[name="firstname"]').value,
+        lastname: document.querySelector('input[name="lastname"]').value,
+        age: document.querySelector('input[name="age"]').value,
+        checkup_date: document.querySelector('input[name="checkup_date"]').value,
+        gender: document.querySelector('input[name="gender"]:checked')?.value || '',
+        congenital_disease: Array.from(document.querySelectorAll('input[name="congenital_disease"]:checked')).map(el => el.value),
+        diagnosis: document.querySelector('textarea[name="diagnosis"]').value
+    };
+
+    // 2. เช็คความถูกต้อง (ใช้ Array )
+    const errors = validateData(userData);
+    if (errors.length > 0) {
+        const messageDOM = document.getElementById('message');
+        messageDOM.innerText = errors[0];
+        messageDOM.className = 'message error';
+        messageDOM.style.display = 'block';
+        return;
+    }
+    try {
+        // 3. บันทึกลงฐานข้อมูลตาราง users
+        const response = await axios.post(`${BASE_URL}/users`, userData);
+        
+        // 4. ดึง ID ที่เพิ่งได้ใหม่มา
+        const newUserId = response.data.insertId;
+
+        // 5. วาร์ปไปหน้าทำนัดหมาย พร้อมส่ง ID ไปด้วย
+        window.location.href = `appointment.html?userId=${newUserId}`;
+
+    } catch (error) {
+        console.error(error);
+        alert('บันทึกข้อมูลไม่สำเร็จ');
+    }
+};
+
 function handleCheckboxChange(element) {
     const allCheckboxes = document.querySelectorAll('input[name="congenital_disease"]');
     const noneCheckbox = Array.from(allCheckboxes).find(cb => cb.value === 'ไม่มี');
