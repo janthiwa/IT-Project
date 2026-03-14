@@ -24,7 +24,7 @@ const initMySQL = async () => {
 
 //path = GET /users สำหรับด get ข้อมูล users ทั้งหมด
 app.get('/users', async (req, res) => {
-    const results = await conn.query('SELECT * FROM users')
+    const results = await conn.query('SELECT * FROM users ORDER BY id DESC')
     res.json(results[0]);
 });
 
@@ -121,6 +121,42 @@ app.put('/users/:id', async (req, res) => {
     }
 });
 
+
+// ดึงข้อมูลนัดหมายรายคนได้
+app.get('/appointments/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const query = 'SELECT * FROM appointments WHERE id = ?';
+        const [results] = await conn.query(query, [id]);
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'ไม่พบนัดหมายหมายเลขนี้' });
+        }
+        res.json(results[0]); // ส่งข้อมูลนัดหมาย 1 อันกลับไป
+    } catch (error) {
+        console.error('ดึงข้อมูลนัดหมายล้มเหลว:', error);
+        res.status(500).json({ message: 'Backend งอแง: ' + error.message });
+    }
+});
+
+app.put('/appointments/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { doctor_name, app_date, app_time, location, note } = req.body;
+        
+        const query = `
+            UPDATE appointments 
+            SET doctor_name = ?, app_date = ?, app_time = ?, location = ?, note = ? 
+            WHERE id = ?`;
+        
+        await conn.query(query, [doctor_name, app_date, app_time, location, note, id]);
+        res.json({ message: 'แก้ไขใบนัดหมายสำเร็จแล้ว' });
+    } catch (error) {
+        console.error('แก้ไขนัดหมายพลาด:', error);
+        res.status(500).json({ message: 'Backend งอแง: ' + error.message });
+    }
+});
+
 // DELETE /users/:id สำหรับลบ user ที่มี id ตรงกับที่ส่งมา
 app.delete('/users/:id', async (req, res) => {
     try {
@@ -176,11 +212,11 @@ app.get('/appointments', async (req, res) => {
     try {
         const query = `
             SELECT 
-                a.*, 
-                u.firstname, u.lastname 
+            a.*, 
+            u.firstname, u.lastname 
             FROM appointments a
             JOIN users u ON a.user_id = u.id
-            ORDER BY a.app_date ASC, a.app_time ASC
+            ORDER BY a.id DESC
         `;
         const [results] = await conn.query(query);
         res.json(results); // ส่ง Array ของนัดหมายทั้งหมดกลับไป
@@ -200,7 +236,7 @@ app.get('/appointment-card/:id', async (req, res) => {
             FROM appointments a
             JOIN users u ON a.user_id = u.id
             WHERE a.id = ? 
-        `; // <--- เราเพิ่ม WHERE เพื่อเจาะจงเฉพาะ ID นั้น ๆ
+        `;
         
         const [results] = await conn.query(query, [id]);
 

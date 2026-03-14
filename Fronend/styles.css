@@ -1,7 +1,7 @@
-/* ตั้งค่าพื้นฐาน */
+/* --- 1. การตั้งค่าพื้นฐาน (Global Styles) --- */
 * {
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
+    font-family: 'Kanit', 'Segoe UI', Tahoma, sans-serif;
 }
 
 body {
@@ -13,254 +13,264 @@ body {
     margin: 0;
 }
 
-/* กล่องคอนเทนเนอร์หลัก */
 .container {
     background-color: #ffffff;
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
 }
 
-/* กล่องแจ้งเตือนแบบแทรกในเนื้อหา */
+/* --- ส่วนที่ 2. แถบเมนูนำทาง (ปรับปรุงใหม่สำหรับ 4 เมนู) --- */
+.top-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* เผื่อหน้าจอแคบ น้องจะตกลงมาเรียงสวยๆ ไม่เบียดกัน */
+    gap: 10px;
+    margin-bottom: 35px;
+    margin-top: 10px;
+}
+
+.nav-btn {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #3498db;
+    padding: 10px 16px; /* ลด padding นิดหน่อยเพื่อให้พอดี 4 ปุ่มจ๊ะ */
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 13px; /* ปรับขนาดตัวอักษรให้พอดีสายตา */
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.nav-btn:hover {
+    background-color: #e2e8f0;
+    color: #4f46e5;
+    transform: translateY(-2px);
+}
+
+.nav-btn.active {
+    background-color: #4f46e5;
+    color: white;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+/* --- 3. การตกแต่งฟอร์ม (Form Styles) --- */
+.header {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 15px;
+}
+
+.form-control, textarea, select, .form {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+    background-color: #fcfcfc;
+    transition: all 0.3s;
+}
+
+.form-control:focus, textarea:focus, select:focus, .form:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* --- 4. ปุ่มกดยืนยันด้านล่างฟอร์ม (Action Buttons Layout) --- */
+.form-actions, .center {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+}
+
+/* --- 5. การจัดการปุ่มในพิมพ์ใบนัด --- */
+.user-item, .appointment-item {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #eee;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 110px;
+}
+
+.button-group button, .btn-action {
+    width: 100%;
+    padding: 9px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+    text-align: center;
+}
+
+.edit-btn { background-color: #4f46e5; }
+.print-btn-small { background-color: #3498db; }
+.delete-btn { background-color: #e74c3c; }
+
+button:hover {
+    filter: brightness(90%);
+    transform: translateY(-1px);
+}
+
+.action-header {
+    display: flex;
+    justify-content: flex-end; /* ผลักปุ่มไปทางขวาให้ดูโปร */
+    margin-bottom: 20px;
+}
+
+/* --- 6. ส่วนการแจ้งเตือน --- */
 .notification-inline {
     width: 100%;
     padding: 12px;
-    border-radius: 5px;
+    border-radius: 8px;
     margin-bottom: 15px;
-    margin-top: 5px;
     font-weight: bold;
-    text-align: left;
     display: none;
     animation: slideDown 0.3s ease-out;
 }
 
-.success {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #c8e6c9;
-}
-
-.error {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #ffcdd2;
-}
+.success { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+.error { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
 
 @keyframes slideDown {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* หัวข้อ Register Form */
-.header {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 25px;
-    color: #333;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
+/* --- 🌟 7. ส่วนที่เพิ่มใหม่: ปุ่มหน้า Register (index.html) ให้สวยสับเท่ากัน 🌟 --- */
+.submit-btn, .next-btn {
+    min-width: 180px !important; /* บังคับให้ปุ่มกว้างเท่ากัน */
+    height: 48px !important;
+    border-radius: 50px !important; /* ทรง Pill Button */
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white !important;
 }
 
-/* การจัดวางแบบ Flex */
-.flex {
+.submit-btn {
+    background-color: #4f46e5 !important;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+.next-btn {
+    background-color: #0ea5e9 !important;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+/* --- ตกแต่งหน้า Card ให้สวยกริบ --- */
+
+/* 1. จัดการตัวเนื้อหาใบนัด */
+.card-content {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #fcfcfc; /* สีขาวนวลๆ ดูแพง */
+    border-radius: 10px;
+    border: 1px dashed #d1d5db; /* เส้นประเหมือนใบนัดจริง */
+}
+
+/* 2. จัดระเบียบแถวข้อมูลให้แยกซ้าย-ขวา */
+.info-row {
     display: flex;
-    gap: 15px;
+    justify-content: space-between; /* ผลักหัวข้อไปซ้าย ข้อมูลไปขวา */
     align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0; /* เส้นคั่นบางๆ */
 }
 
-.form-input {
-    margin-bottom: 15px;
+.info-row:last-child {
+    border-bottom: none; /* แถวสุดท้ายไม่ต้องมีเส้น */
 }
 
-.header-form {
-    min-width: 80px;
+/* 3. แต่งหัวข้อ (Label) */
+.label {
     font-weight: 600;
-    color: #555;
+    color: #4b5563; /* สีเทาเข้มดูสุภาพ */
+    font-size: 15px;
 }
 
-/* ปรับแต่ง Input และ Textarea */
-.form, textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    outline: none;
-    transition: border-color 0.3s;
+/* 4. แต่งข้อมูล (Value) */
+.value {
+    color: #111827;
+    font-weight: 500;
+    text-align: right;
+    max-width: 60%; /* กันข้อมูลยาวเกินจนเบียดหัวข้อ */
 }
 
-.form:focus, textarea:focus {
-    border-color: #4CAF50;
+/* 5. จัดการส่วนปุ่มและลิงก์ข้างล่าง */
+.print-actions {
+    margin-top: 30px;
+    text-align: center;
 }
 
-textarea {
-    height: 80px;
-    resize: vertical;
-    margin-top: 5px;
+.back-link-container {
+    margin-top: 15px;
 }
 
-/* ปรับแต่งส่วนเลือกเพศและงานอดิเรก */
-.gender .flex {
-    gap: 20px;
-}
-
-.form-input > div {
-    margin-top: 5px;
-}
-
-/* ปุ่มกด */
-.center {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 15px;
-}
-
-.button {
-    background-color: #3498db;
-    color: white;
-    padding: 10px 25px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
-    width: auto;
-}
-
-.button:hover {
-    background-color: #2980b9;
-}
-
-.button:active {
-    transform: scale(0.98);
-}
-
-.user-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 5px;
-}
-
-.delete-btn {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 6px 12px;       /* ปรับขนาดให้พอดี */
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    
-    /* 🚨 แก้ 3 บรรทัดนี้ คือหัวใจสำคัญจ๊ะ! */
-    width: 80px !important;    /* บังคับความกว้างให้คงที่ 80 พิกเซล */
-    max-width: 80px;           /* ห้ามยาวเกินนี้เด็ดขาด */
-    display: inline-block;     /* สั่งให้หยุดทำตัวเป็นบล็อกที่กินพื้นที่ทั้งแถว */
-}
-
-.appointment-item {
-    background: #f9f9f9;
-    padding: 15px;
-    border-left: 5px solid #3498db;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.app-info {
-    line-height: 1.6;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    align-items: flex-start;
-}
-
-.header-form {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-@media print {
-    .print-btn, 
-    .footer-link-container, 
-    .back-link,
-    a, 
-    p.footer-link-container {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    .card {
-        border: none !important;
-        box-shadow: none !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-}
-
-.print-btn-small {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 5px 12px;
-    border-radius: 4px;
-    cursor: pointer;
+.back-link {
+    text-decoration: none;
+    color: #9ca3af;
     font-size: 14px;
     transition: 0.3s;
 }
 
-.print-btn-small:hover {
-    background-color: #2980b9;
-    transform: scale(1.05);
+.back-link:hover {
+    color: #4f46e5;
+    text-decoration: underline;
 }
 
-/* จัดระเบียบกลุ่มปุ่มให้เรียงกันสวยๆ */
-.button-group {
-    display: flex;
-    flex-direction: column; /* ให้ปุ่มเรียงกันเป็นแนวตั้ง */
-    gap: 10px;              /* เว้นระยะห่างระหว่างปุ่ม 10px เท่ากันเป๊ะ */
-    margin-left: 15px;      /* ขยับห่างจากตัวหนังสือ */
-    min-width: 100px;       /* กำหนดความกว้างขั้นต่ำให้ปุ่มดูเท่ากัน */
+/* ตั้งค่าตอนพิมพ์ให้กริบสวย (ไม่ติดปุ่มกับลิงก์ไปในกระดาษ) */
+@media print {
+    .print-actions, .top-nav {
+        display: none !important;
+    }
+    .container {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+    .card-content {
+        border: 1px solid #eee; /* เปลี่ยนเส้นประเป็นเส้นทึบบางๆ ตอนพิมพ์ */
+    }
 }
 
-/* ปรับแต่งปุ่มทั้งสองให้ขนาดเท่ากัน */
-.delete-btn, .print-btn-small {
-    width: 100%;            /* ให้ปุ่มกว้างเต็มพื้นที่กลุ่มปุ่ม จะได้เท่ากันทุกอัน */
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;     /* ขอบมนๆ */
-    font-family: 'Kanit', sans-serif;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s;       /* เวลาเอาเมาส์ไปวางจะดูนุ่มนวล */
+/* ซ่อนช่องกรอกสถานที่ไว้ตั้งแต่ต้นจ๊ะ */
+#otherLocationInput {
+    display: none;
 }
-
-/* สีปุ่มยกเลิก */
-.delete-btn {
-    background-color: #e74c3c;
-    color: white;
-}
-
-/* สีปุ่มพิมพ์ */
-.print-btn-small {
-    background-color: #3498db;
-    color: white;
-}
-
-/* เอฟเฟกต์เวลาเมาส์ไปชี้ */
-.delete-btn:hover { background-color: #c0392b; }
-.print-btn-small:hover { background-color: #2980b9; }

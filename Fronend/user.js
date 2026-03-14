@@ -12,16 +12,17 @@ try {
         userDOM.innerHTML = ''; 
 
         // 2. สร้างข้อมูลใหม่จาก Database
-        response.data.forEach(user => {
-            const div = document.createElement('div');
-            div.className = 'user-item';
-            div.innerHTML = `
-            <span>${user.id} ${user.firstname} ${user.lastname}</span>
-            <button onclick="location.href='index.html?id=${user.id}'">Edit</button>
+    response.data.forEach((user, index) => {
+    const div = document.createElement('div');
+    div.className = 'user-item'; // ใส่คลาสให้แถวรายชื่อด้วยนะจ๊ะ จะได้สวย
+    div.innerHTML = `<span><strong>รหัสผู้ป่วย:</strong> HN-${user.id.toString().padStart(4, '0')} | <strong>ชื่อ:</strong> ${user.firstname} ${user.lastname}</span>
+        <div class="button-group">
+            <button class="edit-btn" onclick="location.href='index.html?id=${user.id}'">Edit</button>
             <button class="delete-btn" onclick="deleteUser(${user.id})">Delete</button>
-            `;
-            userDOM.appendChild(div);
-        });
+        </div>
+    `;
+    userDOM.appendChild(div);
+});
 } catch (error) {
         console.error('โหลดข้อมูลไม่สำเร็จ:', error);
 }

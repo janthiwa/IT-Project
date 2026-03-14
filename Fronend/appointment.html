@@ -3,57 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment Form</title>
-    <link rel="stylesheet" href="styles.css"> </head>
+    <title>Appointment Form - ระบบนัดหมาย</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
 <body>
     <div class="container">
-        <a href="user.html">จัดการคนไข้</a>
-        <div class="header">Appointment form</div>
+        <nav class="top-nav">
+            <a href="index.html" class="nav-btn">บันทึกคนไข้</a>
+            <a href="user.html" class="nav-btn">รายชื่อผู้ป่วย</a>
+            <a href="appointment-list.html" class="nav-btn">ตารางนัดหมาย</a>
+            <a href="appointment.html" class="nav-btn">ลงใบนัดหมายใหม่</a>
+        </nav>
 
-       <div class="flex form-input">
-       <div class="header-form">เลือกคนไข้</div>
-            <select class="form" id="userSelect" name="user_id">
-            <option value="">--- กรุณาเลือกคนไข้ ---</option>
-        </select>
-        </div>
+        <h2 class="header">ใบนัดพบแพทย์</h2>
 
-        <div class="flex form-input">
-            <div class="header-form">ชื่อคุณหมอ</div>
-            <input class="form" type="text" name="doctor_name">
-        </div>
-
-        <div class="flex form-input">
-            <div class="header-form">วันที่นัดหมาย</div>
-            <input class="form" type="date" name="app_date">
-        </div>
-
-        <div class="flex form-input">
-            <div class="header-form">เวลานัดหมาย</div>
-            <input class="form" type="time" name="app_time">
-        </div>
-        <div class="flex form-input">
-        <div class="header-form">สถานที่นัดหมาย</div>
-
-        <select class="form" name="location" id="locationSelect">
-           <option value="">--- กรุณาเลือกสถานที่ ---</option>
-           <option value="แผนกอายุรกรรม">แผนกอายุรกรรม</option>
-           <option value="แผนกศัลยกรรม">แผนกศัลยกรรม</option>
-           <option value="ห้องตรวจฉุกเฉิน">ห้องตรวจฉุกเฉิน</option>
-        </select>
+        <div class="form-group">
+            <label>เลือกคนไข้</label>
+            <select class="form-control" id="userSelect" name="user_id">
+                <option value="">--- กรุณาเลือกคนไข้ ---</option>
+            </select>
         </div>
 
         <div class="form-group">
-        <div class="header-form">หมายเหตุ</div>
-           <textarea class="form" name="note" rows="3" placeholder="ระบุเหตุผลการนัดหมาย..."></textarea>
+            <label>ชื่อคุณหมอ</label>
+            <input class="form-control" type="text" name="doctor_name" placeholder="ระบุชื่อแพทย์...">
         </div>
 
-        <div id="message"></div>
-        <div class="center">
-           <button onclick="window.location.href='index.html'"
-           class="button btn-secondary">กลับไปบันทึกข้อมูลผู้ป่วย</button>
-           <button class="button" onclick="submitAppointment()">ยืนยันการนัดหมาย</button>
+        <div class="form-group">
+            <label>วันที่นัดหมาย</label>
+            <input class="form-control" type="date" name="app_date">
         </div>
+
+        <div class="form-group">
+            <label>เวลานัดหมาย</label>
+            <input class="form-control" type="time" name="app_time">
+        </div>
+
+        <div class="form-group">
+            <label>สถานที่นัดหมาย</label>
+            <select class="form-control" name="location" id="locationSelect" onchange="toggleOtherLocation()">
+                <option value="">--- กรุณาเลือกสถานที่ ---</option>
+                <option value="แผนกอายุรกรรม">แผนกอายุรกรรม</option>
+                <option value="แผนกศัลยกรรม">แผนกศัลยกรรม</option>
+                <option value="ห้องตรวจฉุกเฉิน">ห้องตรวจฉุกเฉิน</option>
+                <option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>
+            </select>
+            <input type="text" id="otherLocationInput" placeholder="ระบุชื่อสถานที่..." class="form-control" style="display: none; margin-top: 10px;">
+        </div>
+
+        <div class="form-group">
+            <label>หมายเหตุ</label>
+            <textarea class="form-control" name="note" rows="3" placeholder="ระบุเหตุผลการนัดหมาย..."></textarea>
+        </div>
+
+        <div id="message" class="notification-inline"></div>
+
+        <div class="form-actions">
+            <button id="submitBtn" class="submit-btn" onclick="submitAppointment()">ยืนยันการนัดหมาย</button>
+            <button onclick="window.location.href='index.html'" class="next-btn">กลับไปบันทึกคนไข้</button>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="appointment.js"></script> </body>
+    <script src="appointment.js"></script> 
+
+    <script>
+        // ฟังก์ชันซ่อน/แสดงช่อง "อื่นๆ" แบบไวๆ
+        function toggleOtherLocation() {
+            const select = document.getElementById('locationSelect');
+            const otherInput = document.getElementById('otherLocationInput');
+            otherInput.style.display = (select.value === 'อื่นๆ') ? 'block' : 'none';
+        }
+    </script>
+</body>
 </html>

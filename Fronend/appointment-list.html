@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment List</title>
+    <title>ตารางนัดหมายผู้ป่วย - ระบบโรงพยาบาล</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <div class="nav-menu">
-            <a href="index.html">บันทึกคนไข้</a> | 
-            <a href="user.html">จัดการคนไข้</a> | 
-            <a href="appointment.html">เพิ่มนัดหมาย</a>
-        </div>
-        
-        <h2>ตารางนัดหมายผู้ป่วย</h2>
-        <div id="appointment-container">
-            </div>
+    <nav class="top-nav">
+    <a href="index.html" class="nav-btn">บันทึกคนไข้</a>
+    <a href="user.html" class="nav-btn">รายชื่อผู้ป่วย</a>
+    <a href="appointment-list.html" class="nav-btn">ตารางนัดหมาย</a>
+    <a href="appointment.html" class="nav-btn">ลงใบนัดหมายใหม่</a>
+    </nav>
+
+    <h2 class="header">ตารางนัดหมายผู้ป่วย</h2>
+    <div id="appointment-container"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.3/dist/axios.min.js"></script>

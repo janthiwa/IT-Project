@@ -30,18 +30,21 @@ const loadAppointments = async () => {
             div.className = 'appointment-item';
 
             // ใส่ข้อมูลและปุ่ม
-            div.innerHTML = `
-                <div class="app-info">
-                    <strong>คนไข้:</strong> ${app.firstname} ${app.lastname} <br>
-                    <strong>หมอ:</strong> ${app.doctor_name} <br>
-                    <strong>วันที่:</strong> ${thaiDate} | <strong>เวลา:</strong> ${app.app_time} น. <br>
-                    <strong>สถานที่:</strong> ${app.location}
-                </div>
-                <div class="button-group">
-                    <button class="delete-btn" onclick="deleteAppointment(${app.id})">ยกเลิกนัด</button>
-                    <button class="print-btn-small" onclick="goToPrintCard(${app.id})">พิมพ์ใบนัด</button>
-                </div>
-            `;
+
+        const formattedHN = `HN-${String(app.user_id).padStart(4, '0')}`;
+
+        div.innerHTML = `
+        <div class="app-info">
+        <strong>ใบสั่งนัดเลขที่:</strong> ${app.id} <br> 
+        <strong>รหัสคนไข้:</strong> ${formattedHN} <br> 
+        <strong>คนไข้:</strong> ${app.firstname} ${app.lastname} <br>
+        <strong>หมอ:</strong> ${app.doctor_name} <br>
+        <strong>วันที่:</strong> ${thaiDate} | <strong>เวลา:</strong> ${app.app_time} น. <br>
+        <strong>สถานที่:</strong> ${app.location}</div> <div class="button-group">
+        <button class="delete-btn" onclick="deleteAppointment(${app.id})">ยกเลิกนัด</button>
+        <button class="print-btn-small" onclick="goToPrintCard(${app.id})">พิมพ์ใบนัด</button>
+        <button class="edit-btn" onclick="location.href='appointment.html?id=${app.id}'">แก้ไขนัด</button> </div>
+`;
 
             // 3. แปะการ์ดลงใน Container
             container.appendChild(div);

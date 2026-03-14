@@ -1,198 +1,189 @@
-const validateData = (userData) => {
-    let errors = [];
-    if (!userData.firstname) {
-        errors.push('กรุณากรอกชื่อผู้ป่วย');
-    }
-    if (!userData.lastname) {
-        errors.push('กรุณากรอกนามสกุลผู้ป่วย');
-    }
-    if (!userData.age) {
-        errors.push('กรุณากรอกอายุผู้ป่วย');
-    }
-    if (!userData.checkup_date) {
-        errors.push('กรุณาระบุวันที่เข้าตรวจ');
-    }
-    if (!userData.gender) {
-        errors.push('กรุณาเลือกเพศผู้ป่วย');
-    }
-    if (!userData.congenital_disease || userData.congenital_disease.length === 0) {
-        errors.push('กรุณาเลือกโรคประจำตัวอย่างน้อย 1 โรค , อื่นๆ หรือ ไม่มี');
-    }
-    if (!userData.diagnosis) {
-        errors.push('กรุณากรอกผลการวินิจฉัย การรักษา หรือ ยาที่ได้รับ');
-    
-    return errors;
-    }
-}
+const BASE_URL = 'http://localhost:8000';
+let mode = 'CREATE'; // โหมดเริ่มต้นคือสร้างใหม่
+let selectedId = ''; // เก็บ ID ของคนไข้ที่กำลังแก้ไข
 
+// --- 1. ส่วนดึงข้อมูลเก่ามาโชว์ (สำหรับโหมด Edit) ---
 window.onload = async () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const editId = urlParams.get('id');
+    const id = urlParams.get('id');
+    
+    if (id) {
+        mode = 'EDIT';
+        selectedId = id;
+        console.log('โหมดแก้ไขคนไข้ ID:', id);
 
-    if (editId) {
-        try {
-            // ดึงข้อมูลเก่า (อย่าลืมเช็ค Port Backend ของคุณหนูนะจ๊ะ)
-            const response = await axios.get(`http://localhost:8000/users/${editId}`);
-            const user = response.data;
+    try {
+    const response = await axios.get(`${BASE_URL}/users/${id}`);
+    const user = response.data;
 
-            // เอาข้อมูลมาหยอดใส่ช่องตาม name ใน HTML จ๊ะ
-            document.querySelector('input[name="firstName"]').value = user.firstname || '';
-            document.querySelector('input[name="lastName"]').value = user.lastname || '';
-            document.querySelector('input[name="age"]').value = user.age || '';
-            document.querySelector('input[name="checkup_date"]').value = user.checkup_date || '';
+        // หยอดข้อมูลลงฟอร์ม (เช็คชื่อ name ให้ตรงกับ HTML นะจ๊ะ)
+        document.querySelector('input[name="firstname"]').value = user.firstname || '';
+        document.querySelector('input[name="lastname"]').value = user.lastname || '';
+        document.querySelector('input[name="id_card"]').value = user.id_card || '';
+        document.querySelector('input[name="age"]').value = user.age || '';
+        document.querySelector('input[name="checkup_date"]').value = user.checkup_date ? user.checkup_date.split('T')[0] : '';
             
-            // เลือกเพศให้ตรง
-            const genderRadio = document.querySelector(`input[name="gender"][value="${user.gender}"]`);
-            if (genderRadio) genderRadio.checked = true;
+        // เลือกเพศ
+    const genderRadio = document.querySelector(`input[name="gender"][value="${user.gender}"]`);
+    if (genderRadio) genderRadio.checked = true;
 
-            // หยอดประวัติโรค (Textarea)
-            document.querySelector('textarea[name="diagnosis"]').value = user.diagnosis || '';
+        // หยอดผลวินิจฉัย
+        document.querySelector('textarea[name="diagnosis"]').value = user.diagnosis || '';
 
-            // เปลี่ยนชื่อปุ่ม "ส่งข้อมูล" ให้เป็นโหมดแก้ไข
-            const submitBtn = document.querySelector('button[onclick="submitData()"]');
-            if (submitBtn) submitBtn.innerText = 'ยืนยันการแก้ไขข้อมูล';
+        // จัดการ Checkbox โรคประจำตัว (แกะจาก String เป็นติ๊กถูก)
+    if (user.congenital_disease) {
+        const diseases = user.congenital_disease.split(', ');
+        const checkboxes = document.querySelectorAll('input[name="congenital_disease"]');
+        checkboxes.forEach(cb => {
+        // ถ้าในข้อมูลมีชื่อโรคนี้ หรือมี "อื่นๆ"
+    if (diseases.some(d => d.includes(cb.value))) {
+        cb.checked = true;
+        // ถ้าเป็น "อื่นๆ" ให้ดึงข้อความในวงเล็บมาใส่ในช่อง Text
+    if (cb.value === 'อื่นๆ') {
+        const match = user.congenital_disease.match(/อื่นๆ \((.*)\)/);
+    if (match) {
+        document.getElementById('otherDiseaseDetail').value = match[1];
+        document.getElementById('otherDiseaseDetail').style.display = 'inline-block';
+            }
+        }
+    }
+});
+}
 
-        } catch (error) {
-            console.error('ดึงข้อมูลเก่ามาโชว์ไม่ได้:', error);
+        // เปลี่ยนข้อความบนหัวข้อและปุ่มจ๊ะ
+        document.querySelector('.header').innerText = 'แก้ไขประวัติผู้ป่วย';
+        document.querySelector('.submit-btn').innerText = 'ยืนยันการแก้ไขข้อมูล';
+}
+
+    catch (error) {
+        console.error('ดึงข้อมูลคนไข้ล้มเหลว:', error);
         }
     }
 };
 
-const submitData = async () => {
-let firstNameDOM = document.querySelector('input[name=firstname]');
-    let lastNameDOM = document.querySelector('input[name=lastname]');
-    let ageDOM = document.querySelector('input[name=age]');
-    let genderDOM = document.querySelector('input[name=gender]:checked');
-    let checkupDateDOM = document.querySelector('input[name=checkup_date]');
-    let diseaseDOMs = document.querySelectorAll('input[name=congenital_disease]:checked');
-    let diagnosisDOM = document.querySelector('textarea[name=diagnosis]');
-    let messageDOM = document.getElementById('message');
+// --- 2. ฟังก์ชัน Validation (ตรวจสอบความถูกต้อง) ---
+const validateData = (userData) => {
+    let errors = [];
+    if (!userData.firstname) errors.push('กรุณากรอกชื่อผู้ป่วย');
+    if (!userData.lastname) errors.push('กรุณากรอกนามสกุลผู้ป่วย');
+    
+    if (!userData.id_card) {
+        errors.push('กรุณากรอกเลขบัตรประชาชนผู้ป่วย');
+    } else if (userData.id_card.length !== 13) {
+        errors.push('กรุณากรอกเลขบัตรประชาชนให้ครบ 13 หลัก');
+    }
 
-    try {
+    if (!userData.age) {
+        errors.push('กรุณากรอกอายุผู้ป่วย');
+    } else if (userData.age > 120 || userData.age < 0) {
+        errors.push('กรุณาระบุอายุให้ถูกต้อง (0-120 ปี)');
+    }
+
+    if (!userData.checkup_date) errors.push('กรุณาระบุวันที่เข้าตรวจ');
+    if (!userData.gender) errors.push('กรุณาเลือกเพศผู้ป่วย');
+    
+    const otherCheckbox = document.getElementById('otherCheckbox'); // สมมติว่า ID คืออันนี้
+    const otherInput = document.getElementById('otherDiseaseDetail');
+
+    if (!userData.congenital_disease) {
+    errors.push('กรุณาเลือกโรคประจำตัวอย่างน้อย 1 อย่าง หรือติ๊ก "ไม่มี"');
+    } else if (otherCheckbox && otherCheckbox.checked && !otherInput.value.trim()) {
+        errors.push('กรุณาระบุโรคประจำตัวในช่องอื่นๆ');
+    }
+    if (!userData.diagnosis) errors.push('กรุณากรอกผลการวินิจฉัย/ยาที่ได้รับ');
+
+    return errors;
+};
+
+// --- 3. ฟังก์ชันส่งข้อมูล (Submit) ---
+    const submitData = async () => {
+    let messageDOM = document.getElementById('message');
+    
+    // ดึงข้อมูลจากฟอร์ม
+    let firstName = document.querySelector('input[name="firstname"]').value;
+    let lastName = document.querySelector('input[name="lastname"]').value;
+    let idCard = document.querySelector('input[name="id_card"]').value;
+    let age = document.querySelector('input[name="age"]').value;
+    let genderDOM = document.querySelector('input[name="gender"]:checked');
+    let checkupDate = document.querySelector('input[name="checkup_date"]').value;
+    let diagnosis = document.querySelector('textarea[name="diagnosis"]').value;
+    
+    // รวมโรคประจำตัว (Checkbox)
+    let diseaseDOMs = document.querySelectorAll('input[name="congenital_disease"]:checked');
     let congenital_disease = '';
-    for (let i = 0; i < diseaseDOMs.length; i++) {
-        if (diseaseDOMs[i].value === 'อื่นๆ') {
-        let otherDetail = document.getElementById('otherDiseaseDetail').value;
+    diseaseDOMs.forEach((cb, index) => {
+        if (cb.value === 'อื่นๆ') {
+            let otherDetail = document.getElementById('otherDiseaseDetail').value;
             congenital_disease += `อื่นๆ (${otherDetail})`;
         } else {
-        congenital_disease += diseaseDOMs[i].value;
-    if (i < diseaseDOMs.length - 1) {
-            congenital_disease += ', ';
-            }
+            congenital_disease += cb.value;
         }
-        }
+        if (index < diseaseDOMs.length - 1) congenital_disease += ', ';
+    });
 
     let userData = {
-            firstname: firstNameDOM ? firstNameDOM.value : '',
-            lastname: lastNameDOM ? lastNameDOM.value : '',
-            age: ageDOM ? ageDOM.value : '',
-            gender: genderDOM ? genderDOM.value : '', // เช็คถ้ามีค่าถึงเอา value
-            congenital_disease: congenital_disease,
-            diagnosis: diagnosisDOM ? diagnosisDOM.value : '',
-            checkup_date: checkupDateDOM.value
-        }
-
-    const errors = validateData(userData) || [];
-    if (errors && errors.length > 0) {
-            //ถ้ามี error 
-        throw {
-            message: 'กรอกข้อมูลไม่ครบถ้วน',
-            errors: errors
-        }
-        }
-
-    const response = await axios.post('http://localhost:8000/users', userData)
-        console.log('response', response.data);
-        messageDOM.innerText = 'บันทึกข้อมูลสำเร็จ'
-        messageDOM.className = 'message success'
-
-    } catch (error) {
-    console.log('Error object:', error); 
-    let displayMessage = "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
-    let displayErrors = [];
-    if (error.response && error.response.data) {
-        displayMessage = error.response.data.message || displayMessage;
-        displayErrors = error.response.data.errors || [];
-    } else if (error.errors) {
-        displayMessage = error.message;
-        displayErrors = error.errors;
-    }
-    // ส่วนแสดงผล (ถ้าไม่มี error list ก็จะไม่วนลูป ไม่บึ้มแน่นอน!)
-    let htmlData = `<div>${displayMessage}</div>`;
-    if (Array.isArray(displayErrors) && displayErrors.length > 0) {
-        htmlData += '<ul>';
-        for (let i = 0; i < displayErrors.length; i++) {
-        htmlData += `<li>${displayErrors[i]}</li>`;
-        }
-        htmlData += '</ul>';
-    }
-
-    messageDOM.innerHTML = htmlData;
-    messageDOM.className = 'notification-inline error';
-    messageDOM.style.display = 'block';
-    }
-}
-
-const submitAndGoToAppoint = async () => {
-    // 1. ดึงข้อมูลจากฟอร์มมาใส่ใน Object (ให้เหมือนกับใน submitData ของคุณหนูนะจ๊ะ)
-    const userData = {
-        firstname: document.querySelector('input[name="firstname"]').value,
-        lastname: document.querySelector('input[name="lastname"]').value,
-        age: document.querySelector('input[name="age"]').value,
-        checkup_date: document.querySelector('input[name="checkup_date"]').value,
-        gender: document.querySelector('input[name="gender"]:checked')?.value || '',
-        congenital_disease: Array.from(document.querySelectorAll('input[name="congenital_disease"]:checked')).map(el => el.value),
-        diagnosis: document.querySelector('textarea[name="diagnosis"]').value
+        firstname: firstName,
+        lastname: lastName,
+        id_card: idCard,
+        age: age,
+        gender: genderDOM ? genderDOM.value : '',
+        congenital_disease: congenital_disease,
+        diagnosis: diagnosis,
+        checkup_date: checkupDate
     };
 
-    // 2. เช็คความถูกต้อง (ใช้ Array )
     const errors = validateData(userData);
     if (errors.length > 0) {
-        const messageDOM = document.getElementById('message');
-        messageDOM.innerText = errors[0];
-        messageDOM.className = 'message error';
+        let htmlData = `<div><strong>กรอกข้อมูลไม่ครบถ้วน</strong></div><ul>`;
+        errors.forEach(err => htmlData += `<li>${err}</li>`);
+        htmlData += `</ul>`;
+        messageDOM.innerHTML = htmlData;
+        messageDOM.className = 'notification-inline error';
         messageDOM.style.display = 'block';
         return;
     }
-    try {
-        // 3. บันทึกลงฐานข้อมูลตาราง users
-        const response = await axios.post(`${BASE_URL}/users`, userData);
-        
-        // 4. ดึง ID ที่เพิ่งได้ใหม่มา
-        const newUserId = response.data.insertId;
 
-        // 5. วาร์ปไปหน้าทำนัดหมาย พร้อมส่ง ID ไปด้วย
-        window.location.href = `appointment.html?userId=${newUserId}`;
+    try {
+        let successMessage = 'บันทึกข้อมูลแล้ว';
+        
+        if (mode === 'CREATE') {
+            await axios.post(`${BASE_URL}/users`, userData);
+
+        } else {
+            await axios.put(`${BASE_URL}/users/${selectedId}`, userData);
+            successMessage = 'แก้ไขข้อมูลสำเร็จแล้ว';
+        }
+
+        messageDOM.innerText = successMessage;
+        messageDOM.className = 'notification-inline success';
+        messageDOM.style.display = 'block';
+        
+        // ถ้าบันทึกเสร็จ อาจจะวาร์ปไปหน้ารายชื่อหลังจาก 2 วินาที
+        setTimeout(() => { window.location.href = 'user.html'; }, 2000);
 
     } catch (error) {
-        console.error(error);
-        alert('บันทึกข้อมูลไม่สำเร็จ');
+        console.error('Submit Error:', error);
+        messageDOM.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
+        messageDOM.className = 'notification-inline error';
+        messageDOM.style.display = 'block';
     }
 };
 
+// ฟังก์ชันจัดการ Checkbox เหมือนที่คุณหนูมีอยู่แล้วจ๊ะ
 function handleCheckboxChange(element) {
     const allCheckboxes = document.querySelectorAll('input[name="congenital_disease"]');
     const noneCheckbox = Array.from(allCheckboxes).find(cb => cb.value === 'ไม่มี');
     const otherCheckbox = Array.from(allCheckboxes).find(cb => cb.value === 'อื่นๆ');
     const otherInput = document.getElementById('otherDiseaseDetail');
 
-    // --- ส่วนที่ 1: ถ้าติ๊ก "ไม่มี" ---
     if (element.value === 'ไม่มี' && element.checked) {
-        allCheckboxes.forEach(cb => {
-            if (cb !== noneCheckbox) cb.checked = false; // ปลดติ๊กอันอื่นให้หมด
-        });
-        otherInput.style.display = 'none'; // ซ่อนช่องกรอกอื่นๆ ด้วย
-    } 
-    // --- ส่วนที่ 2: ถ้าติ๊กโรคอื่น (ที่ไม่ใช่ "ไม่มี") ---
-    else if (element.checked) {
-        if (noneCheckbox) noneCheckbox.checked = false; // ปลดติ๊กช่อง "ไม่มี" ทันที
+        allCheckboxes.forEach(cb => { if (cb !== noneCheckbox) cb.checked = false; });
+        otherInput.style.display = 'none';
+    } else if (element.checked) {
+        if (noneCheckbox) noneCheckbox.checked = false;
     }
 
-    // --- ส่วนที่ 3: จัดการการโชว์ช่องกรอก "อื่นๆ" ---
     if (otherCheckbox) {
         otherInput.style.display = otherCheckbox.checked ? 'inline-block' : 'none';
-        if (!otherCheckbox.checked) {
-            otherInput.value = ''; // ล้างข้อความถ้าเลิกติ๊ก
-        }
     }
 }
