@@ -3,17 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Check Connection - IT Project</title>
+    <link rel="stylesheet" href="css/styles.css"> 
 </head>
-<body>
+<body class="connect-container"> <div class="connect-card">
+        <h1 id="status-title">กำลังตรวจสอบการเชื่อมต่อ...</h1>
+        <div id="result-box" class="connect-result">
+            </div>
+        <a href="index.html" class="btn-back">กลับไปหน้าหลัก</a>
+    </div>
+
     <script>
+        const statusTitle = document.getElementById('status-title');
+        const resultBox = document.getElementById('result-box');
+
         fetch('http://localhost:8000/users')
         .then(response => {
-            return response.json()
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
         })
         .then((responseData) => {
-            console.log('Response:', responseData)
+            console.log('Response:', responseData);
+            statusTitle.innerText = "เชื่อมต่อ Database สำเร็จ!";
+            statusTitle.style.color = "#28a745";
+            resultBox.innerHTML = `พบข้อมูลผู้ป่วยทั้งหมด <strong>${responseData.length}</strong> รายการในระบบ!`;
         })
+        .catch((error) => {
+            console.error('Error:', error);
+            statusTitle.innerText = "เชื่อมต่อล้มเหลว!";
+            statusTitle.style.color = "#dc3545";
+            resultBox.innerText = "กรุณาเช็คว่ารัน Backend และ Database หรือยัง?";
+        });
     </script>
 </body>
 </html>

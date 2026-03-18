@@ -81,7 +81,9 @@ body {
 }
 
 .form-control, textarea, select, .form {
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -89,6 +91,12 @@ body {
     font-size: 15px;
     background-color: #fcfcfc;
     transition: all 0.3s;
+    display: block;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
 }
 
 .form-control:focus, textarea:focus, select:focus, .form:focus {
@@ -335,4 +343,48 @@ button:hover {
     border: 1px solid #f5c6cb;
     font-weight: bold;
     max-width: 80%;
+}
+
+/* --- ส่วนสำหรับหน้า Connect --- */
+.connect-container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Sarabun', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.connect-card {
+    text-align: center;
+    padding: 50px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 500px;
+    width: 90%;
+}
+
+.connect-result {
+    margin-top: 25px;
+    font-size: 1.3rem;
+    color: #555;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 25px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.btn-back:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
 }
