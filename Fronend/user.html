@@ -7,21 +7,30 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-    <nav class="top-nav">
-    <a href="index.html" class="nav-btn">บันทึกคนไข้</a>
-    <a href="user.html" class="nav-btn">รายชื่อผู้ป่วย</a>
-    <a href="appointment-list.html" class="nav-btn">ตารางนัดหมาย</a>
-    <a href="appointment.html" class="nav-btn">ลงใบนัดหมายใหม่</a>
-    </nav>
+    <div class="container"> <nav class="top-nav">
+            <a href="index.html" class="nav-btn">บันทึกคนไข้</a>
+            <a href="user.html" class="nav-btn active">รายชื่อผู้ป่วย</a>
+            <a href="appointment-list.html" class="nav-btn">ตารางนัดหมาย</a>
+            <a href="appointment.html" class="nav-btn">ลงใบนัดหมายใหม่</a>
+        </nav>
 
         <h2 class="header">ทะเบียนรายชื่อผู้ป่วย</h2>
 
+        <div class="search-wrapper">
+            <label for="searchInput" class="search-label">ค้นหาข้อมูล:</label>
+            <div class="input-group">
+                <input type="text" id="searchInput" placeholder="พิมพ์รหัสผู้ป่วย: HN-0048..." onkeyup="searchPatient()">
+                <i class="search-icon">🔍</i>
+            </div>
+        </div>
+
+        <div id="noDataMessage" class="no-data-alert" style="display: none;">ไม่พบข้อมูลที่ค้นหา... กรุณาลองตรวจสอบการสะกดคำใหม่อีกครั้ง
+        </div>
+
         <div id="user" class="user-list-container">
             </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.3/dist/axios.min.js"></script>
+    </div> <script src="https://cdn.jsdelivr.net/npm/axios@1.1.3/dist/axios.min.js"></script>
     <script src="user.js"></script>
 </body>
 </html>

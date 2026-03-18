@@ -122,7 +122,7 @@ app.put('/users/:id', async (req, res) => {
 });
 
 
-// ดึงข้อมูลนัดหมายรายคนได้
+// ดึงข้อมูลนัดหมายรายคน
 app.get('/appointments/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -132,7 +132,7 @@ app.get('/appointments/:id', async (req, res) => {
         if (results.length === 0) {
             return res.status(404).json({ message: 'ไม่พบนัดหมายหมายเลขนี้' });
         }
-        res.json(results[0]); // ส่งข้อมูลนัดหมาย 1 อันกลับไป
+        res.json(results[0]);
     } catch (error) {
         console.error('ดึงข้อมูลนัดหมายล้มเหลว:', error);
         res.status(500).json({ message: 'Backend งอแง: ' + error.message });
@@ -190,16 +190,15 @@ app.delete('/appointments/:id', async (req, res) => {
 });
 
 // ส่วนการจัดการนัดหมาย (Appointments)
-// 1. Route สำหรับบันทึกข้อมูลนัดหมายใหม่
 app.post('/appointments', async (req, res) => {
     try {
         const { user_id, doctor_name, app_date, app_time, location, note } = req.body;
         const query = `INSERT INTO appointments (user_id, doctor_name, app_date, app_time, location, note) VALUES (?, ?, ?, ?, ?, ?)`;
         
-        // ตรงนี้สำคัญมากจ๊ะ!
+
         const [results] = await conn.query(query, [user_id, doctor_name, app_date, app_time, location, note]);
         
-        // คุณหนูต้องส่ง results กลับไปแบบนี้ เพื่อให้หน้าบ้านเห็น insertId
+       
         res.status(201).json(results); 
         
     } catch (error) {
@@ -207,7 +206,7 @@ app.post('/appointments', async (req, res) => {
     }
 });
 
-// ดึงรายละเอียดใบนัดหมายแบบรวมข้อมูลผู้ป่วย
+
 app.get('/appointments', async (req, res) => {
     try {
         const query = `
@@ -219,7 +218,7 @@ app.get('/appointments', async (req, res) => {
             ORDER BY a.id DESC
         `;
         const [results] = await conn.query(query);
-        res.json(results); // ส่ง Array ของนัดหมายทั้งหมดกลับไป
+        res.json(results);
     } catch (error) {
         console.error('ดึงข้อมูลนัดหมายรวมพลาด:', error);
         res.status(500).json({ message: 'เซิร์ฟเวอร์งอแง' });
@@ -243,7 +242,7 @@ app.get('/appointment-card/:id', async (req, res) => {
         if (results.length === 0) {
             return res.status(404).json({ message: 'ไม่พบนัดหมายนี้' });
         }
-        res.json(results[0]); // ส่งข้อมูลคนเดียวกลับไป
+        res.json(results[0]);
     } catch (error) {
         console.error('ดึงใบนัดหมายพลาด:', error);
         res.status(500).json({ message: 'เซิร์ฟเวอร์งอแง' });

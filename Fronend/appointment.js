@@ -6,7 +6,7 @@ window.onload = async () => {
     // 1. โหลดรายชื่อคนไข้ใส่ Dropdown ก่อนเสมอ
     await loadPatients();
 
-    // 2. เช็คว่ามี ID วาร์ปมาบน URL ไหม (สำหรับการแก้ไขนัด)
+
     const urlParams = new URLSearchParams(window.location.search);
     const rawId = urlParams.get('id'); 
     const id = rawId ? rawId.split(':')[0] : null; 
@@ -21,7 +21,7 @@ window.onload = async () => {
             const response = await axios.get(`${BASE_URL}/appointments/${id}`);
             const app = response.data;
 
-            // หยอดข้อมูลเก่าลงฟอร์ม
+
             document.getElementById('userSelect').value = app.user_id;
             document.querySelector('input[name="doctor_name"]').value = app.doctor_name || '';
             
@@ -34,24 +34,24 @@ window.onload = async () => {
             document.querySelector('input[name="app_time"]').value = app.app_time || '';
             document.querySelector('textarea[name="note"]').value = app.note || '';
 
-            // 3. จัดการเรื่องสถานที่
+
             const locationSelect = document.getElementById('locationSelect');
             const otherInput = document.getElementById('otherLocationInput');
             const options = Array.from(locationSelect.options).map(opt => opt.value);
             
             if (options.includes(app.location)) {
-                // ถ้าสถานที่เดิม มีอยู่ในลิสต์ (เช่น แผนกศัลยกรรม)
+
                 locationSelect.value = app.location;
                 otherInput.style.display = 'none';
                 otherInput.value = '';
             } else {
-                // ถ้าไม่มีในลิสต์ แปลว่าเป็นที่ที่พิมพ์เอง (อื่นๆ)
+
                 locationSelect.value = 'อื่นๆ';
                 otherInput.value = app.location;
-                otherInput.style.display = 'block'; // สั่งเปิดช่องค้างไว้เพื่อให้เห็นค่าเดิม
+                otherInput.style.display = 'block';
             }
 
-            // เปลี่ยนหน้าตาปุ่มและหัวข้อให้รู้ว่ากำลังแก้
+
             document.querySelector('.header').innerText = 'แก้ไขใบนัดหมาย';
             document.querySelector('.submit-btn').innerText = 'ยืนยันการแก้ไขนัดหมาย';
 
@@ -75,7 +75,7 @@ const loadPatients = async () => {
             userSelect.appendChild(option);
         });
 
-        // กรณีวาร์ปมาจากหน้าเพิ่มคนไข้ใหม่ (จะมี userId แถมมา)
+
         const urlParams = new URLSearchParams(window.location.search);
         const userIdFromUrl = urlParams.get('userId');
         if (userIdFromUrl && userSelect) {
@@ -90,17 +90,17 @@ const loadPatients = async () => {
 const submitAppointment = async () => {
     const messageDOM = document.getElementById('message');
     
-    // 1. ดึงค่าจากหน้าจอมาก่อน
+
     let locationSelectValue = document.getElementById('locationSelect').value;
     let otherLocation = document.getElementById('otherLocationInput').value;
     let finalLocation = locationSelectValue;
 
-    // 2. ถ้าเลือกอื่นๆ แต่ไม่พิมพ์ ให้ทำเป็นค่าว่าง เพื่อให้ดักจับ Error
+
     if (locationSelectValue === 'อื่นๆ') {
         finalLocation = otherLocation.trim() ? otherLocation : '';
     }
 
-    // 3. สร้างก้อนข้อมูลโดยใช้ finalLocation ที่เราเช็คแล้ว
+
     const appointmentData = {
         user_id: document.getElementById('userSelect').value,
         doctor_name: document.querySelector('input[name="doctor_name"]').value,
@@ -110,7 +110,7 @@ const submitAppointment = async () => {
         note: document.querySelector('textarea[name="note"]').value
     };
 
-    // 4. ด่านตรวจ (Validation)
+
     let errors = [];
     if (!appointmentData.user_id) errors.push('กรุณาเลือกคนไข้');
     if (!appointmentData.doctor_name) errors.push('กรุณากรอกชื่อคุณหมอ');
@@ -145,7 +145,7 @@ const submitAppointment = async () => {
         
         alert(successMessage + '! กำลังเปิดใบนัดหมาย');
 
-        // วาร์ปไปดูใบนัดหมาย (Card)
+
         window.location.href = `card.html?id=${finalId}`;
 
     } catch (error) {

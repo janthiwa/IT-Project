@@ -1,4 +1,4 @@
-/* --- 1. การตั้งค่าพื้นฐาน (Global Styles) --- */
+/* --- 1. การตั้งค่าพื้นฐาน --- */
 * {
     box-sizing: border-box;
     font-family: 'Kanit', 'Segoe UI', Tahoma, sans-serif;
@@ -22,11 +22,11 @@ body {
     max-width: 600px;
 }
 
-/* --- ส่วนที่ 2. แถบเมนูนำทาง (ปรับปรุงใหม่สำหรับ 4 เมนู) --- */
+/* --- ส่วนที่ 2. แถบเมนูนำทาง ( 4 เมนู ด้านบน) --- */
 .top-nav {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap; /* เผื่อหน้าจอแคบ น้องจะตกลงมาเรียงสวยๆ ไม่เบียดกัน */
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 35px;
     margin-top: 10px;
@@ -36,10 +36,10 @@ body {
     text-decoration: none;
     color: #ffffff;
     background-color: #3498db;
-    padding: 10px 16px; /* ลด padding นิดหน่อยเพื่อให้พอดี 4 ปุ่มจ๊ะ */
+    padding: 10px 16px;
     border-radius: 50px;
     font-weight: 600;
-    font-size: 13px; /* ปรับขนาดตัวอักษรให้พอดีสายตา */
+    font-size: 13px;
     transition: all 0.3s ease;
     border: 1px solid transparent;
 }
@@ -56,7 +56,7 @@ body {
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
 }
 
-/* --- 3. การตกแต่งฟอร์ม (Form Styles) --- */
+/* --- 3. การตกแต่งฟอร์ม --- */
 .header {
     font-size: 26px;
     font-weight: bold;
@@ -96,7 +96,7 @@ body {
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
-/* --- 4. ปุ่มกดยืนยันด้านล่างฟอร์ม (Action Buttons Layout) --- */
+/* --- 4. ปุ่มกดยืนยันด้านล่างฟอร์ม --- */
 .form-actions, .center {
     display: flex;
     justify-content: center;
@@ -148,7 +148,7 @@ button:hover {
 
 .action-header {
     display: flex;
-    justify-content: flex-end; /* ผลักปุ่มไปทางขวาให้ดูโปร */
+    justify-content: flex-end;
     margin-bottom: 20px;
 }
 
@@ -171,11 +171,11 @@ button:hover {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- 🌟 7. ส่วนที่เพิ่มใหม่: ปุ่มหน้า Register (index.html) ให้สวยสับเท่ากัน 🌟 --- */
+/* --- 🌟 7. ปุ่มหน้า Register (index.html) ให้เท่ากัน --- */
 .submit-btn, .next-btn {
-    min-width: 180px !important; /* บังคับให้ปุ่มกว้างเท่ากัน */
+    min-width: 180px !important;
     height: 48px !important;
-    border-radius: 50px !important; /* ทรง Pill Button */
+    border-radius: 50px !important;
     border: none !important;
     font-weight: 600 !important;
     font-size: 16px !important;
@@ -194,43 +194,43 @@ button:hover {
     box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
 }
 
-/* --- ตกแต่งหน้า Card ให้สวยกริบ --- */
+/* --- ตกแต่งหน้า Card --- */
 
-/* 1. จัดการตัวเนื้อหาใบนัด */
+/* 1. ตัวเนื้อหาใบนัด */
 .card-content {
     margin: 20px 0;
     padding: 20px;
-    background-color: #fcfcfc; /* สีขาวนวลๆ ดูแพง */
+    background-color: #fcfcfc;
     border-radius: 10px;
-    border: 1px dashed #d1d5db; /* เส้นประเหมือนใบนัดจริง */
+    border: 1px dashed #d1d5db;
 }
 
 /* 2. จัดระเบียบแถวข้อมูลให้แยกซ้าย-ขวา */
 .info-row {
     display: flex;
-    justify-content: space-between; /* ผลักหัวข้อไปซ้าย ข้อมูลไปขวา */
+    justify-content: space-between;
     align-items: center;
     padding: 12px 0;
-    border-bottom: 1px solid #f0f0f0; /* เส้นคั่นบางๆ */
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .info-row:last-child {
-    border-bottom: none; /* แถวสุดท้ายไม่ต้องมีเส้น */
+    border-bottom: none;
 }
 
-/* 3. แต่งหัวข้อ (Label) */
+/* 3. แต่งหัวข้อ */
 .label {
     font-weight: 600;
-    color: #4b5563; /* สีเทาเข้มดูสุภาพ */
+    color: #4b5563;
     font-size: 15px;
 }
 
-/* 4. แต่งข้อมูล (Value) */
+/* 4. แต่งข้อมูล */
 .value {
     color: #111827;
     font-weight: 500;
     text-align: right;
-    max-width: 60%; /* กันข้อมูลยาวเกินจนเบียดหัวข้อ */
+    max-width: 60%;
 }
 
 /* 5. จัดการส่วนปุ่มและลิงก์ข้างล่าง */
@@ -255,7 +255,7 @@ button:hover {
     text-decoration: underline;
 }
 
-/* ตั้งค่าตอนพิมพ์ให้กริบสวย (ไม่ติดปุ่มกับลิงก์ไปในกระดาษ) */
+
 @media print {
     .print-actions, .top-nav {
         display: none !important;
@@ -266,11 +266,73 @@ button:hover {
         padding: 0 !important;
     }
     .card-content {
-        border: 1px solid #eee; /* เปลี่ยนเส้นประเป็นเส้นทึบบางๆ ตอนพิมพ์ */
+        border: 1px solid #eee;
     }
 }
 
-/* ซ่อนช่องกรอกสถานที่ไว้ตั้งแต่ต้นจ๊ะ */
+/* ซ่อนช่องกรอกสถานที่ไว้ตั้งแต่ต้น */
 #otherLocationInput {
     display: none;
+}
+
+/* การตกแต่งช่องค้นหา */
+.search-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.search-label {
+    font-weight: 600;
+    color: #4b5563;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #fcfcfc;
+}
+
+#searchInput:focus {
+    border-color: #4f46e5;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+}
+
+.search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+}
+
+/* ส่วนตกแต่งกล่องแจ้งเตือน "ไม่พบข้อมูล" */
+#noDataMessage {
+    display: none;
+    text-align: center;
+    color: #d9534f;
+    background-color: #f8d7da;
+    padding: 15px 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    border: 1px solid #f5c6cb;
+    font-weight: bold;
+    max-width: 80%;
 }

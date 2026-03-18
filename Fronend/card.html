@@ -34,7 +34,7 @@
                     const response = await axios.get(`http://localhost:8000/appointment-card/${appId}`);
                     const data = response.data;
 
-                    // หยอดข้อมูลโดยใช้ชื่อคลาสเพื่อให้คุณหนูไปคุมสไตล์ต่อใน CSS จ๊ะ
+
                     document.getElementById('cardContent').innerHTML = `
                         <div class="info-row"><span class="label">ชื่อ-นามสกุล:</span> <span class="value">${data.firstname} ${data.lastname}</span></div>
                         <div class="info-row"><span class="label">อายุ:</span> <span class="value">${data.age} ปี</span></div>
