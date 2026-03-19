@@ -37,17 +37,19 @@ exports.getUserById = async (req, res) => {
     }
 };
 
-// 3. เพิ่มข้อมูลผู้ป่วยใหม่
+
 exports.createUser = async (req, res) => {
     try {
         const errors = validateData(req.body);
+        
+        if (!req.body.id_card) errors.push('กรุณากรอกเลขบัตรประชาชน');
+
         if (errors.length > 0) {
             return res.status(400).json({ message: 'กรอกข้อมูลไม่ครบถ้วนนะ', errors });
         }
-
-        const { firstname, lastname, birthday, age, gender, checkup_date, congenital_disease, diagnosis } = req.body;
-        const query = `INSERT INTO users (firstname, lastname, birthday, age, gender, checkup_date, congenital_disease, diagnosis) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-        const [results] = await db.pool.execute(query, [firstname, lastname, birthday, age, gender, checkup_date, congenital_disease, diagnosis]);
+        const { id_card, firstname, lastname, birthday, age, gender, checkup_date, congenital_disease, diagnosis } = req.body;
+        const query = `INSERT INTO users (id_card, firstname, lastname, birthday, age, gender, checkup_date, congenital_disease, diagnosis) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const [results] = await db.pool.execute(query, [id_card, firstname, lastname, birthday, age, gender, checkup_date, congenital_disease, diagnosis]);
         
         res.status(201).json({ message: 'เพิ่มข้อมูลผู้ป่วยสำเร็จแล้ว', id: results.insertId });
     } catch (error) {
