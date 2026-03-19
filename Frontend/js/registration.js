@@ -1,8 +1,7 @@
 const BASE_URL = 'http://localhost:8000';
-let mode = 'CREATE'; // โหมดเริ่มต้นคือสร้างใหม่
-let selectedId = ''; // เก็บ ID ของคนไข้ที่กำลังแก้ไข
+let mode = 'CREATE';
+let selectedId = '';
 
-// --- ส่วนดึงข้อมูลเก่ามาโชว์ (Edit) ---
 window.onload = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
@@ -10,8 +9,6 @@ window.onload = async () => {
     if (id) {
         mode = 'EDIT';
         selectedId = id;
-        console.log('โหมดแก้ไขคนไข้ ID:', id);
-
         try {
             const response = await axios.get(`${BASE_URL}/users/${id}`);
             const user = response.data;
@@ -24,17 +21,21 @@ window.onload = async () => {
     }
 };
 
-// ฟังก์ชันเติมข้อมูลลง Form (ตอนแก้ไข)
 const fillFormData = (user) => {
     document.querySelector('input[name="firstname"]').value = user.firstname || '';
     document.querySelector('input[name="lastname"]').value = user.lastname || '';
     document.querySelector('input[name="id_card"]').value = user.id_card || '';
     document.querySelector('input[name="age"]').value = user.age || '';
+
+
+    if (user.birthday) {
+        document.getElementById('birthday').value = user.birthday.split('T')[0];
+    }
+
     document.querySelector('input[name="checkup_date"]').value = user.checkup_date ? user.checkup_date.split('T')[0] : '';
     
     const genderRadio = document.querySelector(`input[name="gender"][value="${user.gender}"]`);
     if (genderRadio) genderRadio.checked = true;
-
     document.querySelector('textarea[name="diagnosis"]').value = user.diagnosis || '';
 
     if (user.congenital_disease) {
@@ -46,8 +47,9 @@ const fillFormData = (user) => {
                 if (cb.value === 'อื่นๆ') {
                     const match = user.congenital_disease.match(/อื่นๆ \((.*)\)/);
                     if (match) {
-                        document.getElementById('otherDiseaseDetail').value = match[1];
-                        document.getElementById('otherDiseaseDetail').style.display = 'inline-block';
+                        const otherInp = document.getElementById('otherDiseaseDetail');
+                        otherInp.value = match[1];
+                        otherInp.style.display = 'inline-block';
                     }
                 }
             }
@@ -55,20 +57,19 @@ const fillFormData = (user) => {
     }
 };
 
-// --- ฟังก์ชันส่งข้อมูล ---
-
 window.submitData = async () => {
     let messageDOM = document.getElementById('message');
     let userData = collectFormData();
 
-    const errors = validateData(userData);
+    const errors = validateRegistration(userData); 
+    
     if (errors.length > 0) {
         showErrors(errors, messageDOM);
         return;
     }
 
     try {
-        let successMessage = mode === 'CREATE' ? 'บันทึกข้อมูลแล้ว' : 'แก้ไขข้อมูลสำเร็จแล้ว';
+        let successMessage = mode === 'CREATE' ? 'บันทึกข้อมูลสำเร็จแล้ว' : 'แก้ไขข้อมูลเรียบร้อย';
         
         if (mode === 'CREATE') {
             await axios.post(`${BASE_URL}/users`, userData);
@@ -76,17 +77,28 @@ window.submitData = async () => {
             await axios.put(`${BASE_URL}/users/${selectedId}`, userData);
         }
 
-        showMessage(successMessage, 'success', messageDOM);
-        // วาร์ปไปหน้ารายชื่อหลังบันทึกสำเร็จ
-        setTimeout(() => { window.location.href = 'user.html'; }, 2000);
+        messageDOM.innerHTML = `
+            <div class="success-box">
+                <span style="font-size: 20px;">✨</span> ${successMessage}
+                <p style="font-size: 14px; margin-top: 5px; font-weight: 400;">ระบบกำลังพากลับหน้ารายชื่อ...</p>
+            </div>`;
+        messageDOM.classList.add('show');
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        setTimeout(() => { 
+            window.location.href = 'user.html'; 
+        }, 2000);
 
     } catch (error) {
-        console.error('Submit Error:', error);
-        showMessage('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์', 'error', messageDOM);
+        console.error('Error:', error);
+        messageDOM.innerHTML = `
+            <div class="error-box">
+                <strong>เกิดข้อผิดพลาด</strong>ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ โปรดเช็ก Backend ด่วน!</div>`;
+        messageDOM.classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 };
-
-// --- ฟังก์ชันจัดการ Checkbox ---
 
 window.handleCheckboxChange = function(element) {
     const allCheckboxes = document.querySelectorAll('input[name="congenital_disease"]');
@@ -106,7 +118,6 @@ window.handleCheckboxChange = function(element) {
     }
 }
 
-// ฟังก์ชันเก็บข้อมูลจากหน้า Form
 const collectFormData = () => {
     let diseaseDOMs = document.querySelectorAll('input[name="congenital_disease"]:checked');
     let congenital_disease = Array.from(diseaseDOMs).map(cb => {
@@ -118,6 +129,7 @@ const collectFormData = () => {
         firstname: document.querySelector('input[name="firstname"]').value,
         lastname: document.querySelector('input[name="lastname"]').value,
         id_card: document.querySelector('input[name="id_card"]').value,
+        birthday: document.getElementById('birthday').value,
         age: document.querySelector('input[name="age"]').value,
         gender: document.querySelector('input[name="gender"]:checked')?.value || '',
         congenital_disease: congenital_disease,
@@ -126,19 +138,35 @@ const collectFormData = () => {
     };
 };
 
-// ฟังก์ชันโชว์ Error แบบเป็นรายการ
 const showErrors = (errors, dom) => {
-    let htmlData = `<div><strong>กรอกข้อมูลไม่ครบถ้วน</strong></div><ul>`;
-    errors.forEach(err => htmlData += `<li>${err}</li>`);
-    htmlData += `</ul>`;
-    dom.innerHTML = htmlData;
-    dom.className = 'notification-inline error';
-    dom.style.display = 'block';
-};
+    const allInputs = document.querySelectorAll('input, textarea, select, .option-group, .disease-grid');
+    allInputs.forEach(el => el.classList.remove('input-error'));
 
-// ฟังก์ชันโชว์ข้อความแจ้งเตือน
-const showMessage = (text, type, dom) => {
-    dom.innerText = text;
-    dom.className = `notification-inline ${type}`;
-    dom.style.display = 'block';
+    let htmlList = errors.map(err => `<li>${err}</li>`).join('');
+    dom.innerHTML = `
+        <div class="error-box">
+            <strong>กรุณากรอกข้อมูลให้ครบถ้วน:</strong>
+            <ul>${htmlList}</ul>
+        </div>`;
+    dom.classList.add('show');
+
+    const userData = collectFormData();
+
+    const addErrorClass = (selector) => {
+        const el = document.querySelector(selector) || document.getElementById(selector);
+        if (el) el.classList.add('input-error');
+    };
+
+    if (!userData.firstname) addErrorClass('input[name="firstname"]');
+    if (!userData.lastname) addErrorClass('input[name="lastname"]');
+    if (!userData.id_card || userData.id_card.length !== 13) addErrorClass('input[name="id_card"]');
+    if (!userData.birthday) addErrorClass('#birthday');
+    if (!userData.age || userData.age <= 0) addErrorClass('input[name="age"]');
+    if (!userData.checkup_date) addErrorClass('input[name="checkup_date"]');
+    if (!userData.diagnosis) addErrorClass('textarea[name="diagnosis"]');
+    
+    if (!userData.gender) addErrorClass('.option-group');
+    if (!userData.congenital_disease) addErrorClass('.disease-grid');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };

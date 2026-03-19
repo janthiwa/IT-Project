@@ -1,75 +1,71 @@
 const BASE_URL = 'http://localhost:8000';
 
 window.onload = async () => {
+
     await loadAppointments();
 
-    // ตั้งค่าระบบค้นหา
     const searchInput = document.getElementById('searchInput');
-const noDataMsg = document.getElementById('noDataMessage');
+    const noDataMsg = document.getElementById('noDataMessage');
 
-if (searchInput) {
-    searchInput.addEventListener('keyup', function() {
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
 
-        const keywords = this.value.toLowerCase().trim().split(/\s+/);
-        
-
-        const items = document.querySelectorAll('.user-item, .appointment-item');
-        let hasVisibleItem = false;
-
-        items.forEach(item => {
-            const text = item.textContent.toLowerCase();
+            const val = this.value.trim().toLowerCase();
             
-            const isMatch = keywords.every(kw => text.includes(kw));
+            const items = document.querySelectorAll('.appointment-item');
+            let hasVisibleItem = false;
 
-            if (isMatch) {
-                item.style.display = "";
-                hasVisibleItem = true;
-            } else {
-                item.style.display = "none";
+
+            if (val === "") {
+                items.forEach(item => item.classList.remove('hidden'));
+                if (noDataMsg) noDataMsg.classList.add('hidden');
+                return;
+            }
+
+            const keywords = val.split(/\s+/);
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const isMatch = keywords.every(kw => text.includes(kw));
+                
+                if (isMatch) {
+                    item.classList.remove('hidden');
+                    hasVisibleItem = true;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            if (noDataMsg) {
+                if (!hasVisibleItem) {
+                    noDataMsg.classList.remove('hidden');
+                    console.log("หาไม่เจอ!");
+                } else {
+                    noDataMsg.classList.add('hidden');
+                }
             }
         });
+    }
+};
 
-
-        if (noDataMsg) {
-
-            if (!hasVisibleItem && this.value.trim() !== "") {
-                noDataMsg.style.display = "block";
-            } else {
-                noDataMsg.style.display = "none";
-            }
-        }
-    });
-}
-}
-
-// ฟังก์ชันโหลดข้อมูล
 const loadAppointments = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/appointments`);
         const container = document.getElementById('appointment-container');
-
-        // ล้างหน้าจอก่อนเริ่มโหลด
         container.innerHTML = '';
 
         if (response.data.length === 0) {
-            container.innerHTML = '<p>ยังไม่มีข้อมูลนัดหมายในขณะนี้</p>';
+            container.innerHTML = '<p class="text-center">ยังไม่มีข้อมูลนัดหมายในขณะนี้</p>';
             return;
         }
 
         response.data.forEach(app => {
-            // แปลงวันที่เป็นแบบไทย
             const thaiDate = new Date(app.app_date).toLocaleDateString('th-TH', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+                year: 'numeric', month: 'long', day: 'numeric'
             });
-
             const formattedHN = `HN-${String(app.user_id).padStart(4, '0')}`;
-
 
             const div = document.createElement('div');
             div.className = 'appointment-item';
-
             div.innerHTML = `
                 <div class="app-info">
                     <strong>ใบสั่งนัดเลขที่:</strong> ${app.id} <br> 
@@ -85,31 +81,47 @@ const loadAppointments = async () => {
                     <button class="edit-btn" onclick="location.href='appointment.html?id=${app.id}'">แก้ไขนัด</button> 
                 </div>
             `;
-
             container.appendChild(div);
         });
-
     } catch (error) {
         console.error('โหลดนัดหมายไม่สำเร็จ:', error);
-        document.getElementById('appointment-container').innerHTML = '<p style="color:red;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
     }
 };
 
-// ฟังก์ชันลบนัดหมาย
 const deleteAppointment = async (id) => {
-    if (confirm('ต้องการจะยกเลิกนัดหมายนี้จริงๆ ใช่ไหม?')) {
+    const result = await Swal.fire({
+        title: 'ยืนยันการยกเลิกนัด?',
+        text: "คุณต้องการจะยกเลิกนัดหมายนี้จริงๆ ใช่ไหม?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'ใช่ ยกเลิกไปเลย!',
+        cancelButtonText: 'ไม่ อย่ายกเลิกนะ!',
+    });
+
+    if (result.isConfirmed) {
         try {
             await axios.delete(`${BASE_URL}/appointments/${id}`);
-            alert('ยกเลิกนัดหมายเรียบร้อยแล้ว');
-            await loadAppointments();
+            
+            await Swal.fire({
+                title: 'ยกเลิกเรียบร้อย!',
+                text: 'รายการนัดหมายถูกลบออกจากระบบแล้ว',
+                icon: 'success'
+            });
+
+            await loadData();
+            
         } catch (error) {
-            console.error('ยกเลิกไม่สำเร็จ:', error);
-            alert('ยกเลิกไม่สำเร็จ');
+            console.error('ยกเลิกนัดไม่สำเร็จ:', error);
+            
+            Swal.fire({
+                title: 'เกิดข้อผิดพลาด',
+                text: 'ไม่สามารถยกเลิกนัดได้ ลองเช็กเซิร์ฟเวอร์',
+                icon: 'error'
+            });
         }
     }
 };
 
-// ฟังก์ชันไปหน้าปริ้นท์
 function goToPrintCard(id) {
     window.location.href = `card.html?id=${id}`;
 }

@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Form - ระบบนัดหมาย</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <nav class="top-nav">
-            <a href="index.html" class="nav-btn">บันทึกคนไข้</a>
+            <a href="registration.html" class="nav-btn">บันทึกผู้ป่วย</a>
             <a href="user.html" class="nav-btn">รายชื่อผู้ป่วย</a>
             <a href="appointment-list.html" class="nav-btn">ตารางนัดหมาย</a>
-            <a href="appointment.html" class="nav-btn">ลงใบนัดหมายใหม่</a>
+            <a href="appointment.html" class="nav-btn active">ลงใบนัดหมายใหม่</a>
         </nav>
 
         <h2 class="header">ใบนัดพบแพทย์</h2>
 
+        <div id="message"></div>
+
         <div class="form-group">
             <label>เลือกคนไข้</label>
             <select class="form-control" id="userSelect" name="user_id">
-                <option value="">--- กรุณาเลือกคนไข้ ---</option>
+                <option value="">--- กรุณาเลือกผู้ป่วย ---</option>
             </select>
         </div>
 
@@ -42,13 +45,19 @@
         <div class="form-group">
             <label>สถานที่นัดหมาย</label>
             <select class="form-control" name="location" id="locationSelect" onchange="toggleOtherLocation()">
-                <option value="">--- กรุณาเลือกสถานที่ ---</option>
-                <option value="แผนกอายุรกรรม">แผนกอายุรกรรม</option>
-                <option value="แผนกศัลยกรรม">แผนกศัลยกรรม</option>
-                <option value="ห้องตรวจฉุกเฉิน">ห้องตรวจฉุกเฉิน</option>
+                <option value="">--- กรุณาเลือกสถานที่นัดหมาย ---</option>
+                <option value="แผนกอายุรกรรม">แผนกอายุรกรรม (ตรวจโรคทั่วไป)</option>
+                <option value="แผนกศัลยกรรม">แผนกศัลยกรรม (ผ่าตัด/แผล)</option>
+                <option value="ห้องตรวจฉุกเฉิน">ห้องตรวจฉุกเฉิน (ER)</option>   
+                <option value="แผนกทันตกรรม">แผนกทันตกรรม (ทำฟัน)</option>
+                <option value="แผนกกุมารเวช">แผนกกุมารเวช (รักษาเด็ก)</option>
+                <option value="แผนกสูตินรีเวช">แผนกสูตินรีเวช (ตรวจภายใน/ฝากครรภ์)</option>
+                <option value="แผนกจักษุวิทยา">แผนกจักษุวิทยา (ตรวจตา)</option>
+                <option value="แผนกกายภาพบำบัด">แผนกกายภาพบำบัด</option>
+                <option value="ศูนย์ตรวจสุขภาพ">ศูนย์ตรวจสุขภาพ</option>
                 <option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>
             </select>
-            <input type="text" id="otherLocationInput" placeholder="ระบุชื่อสถานที่..." class="form-control" style="display: none; margin-top: 10px;">
+            <input type="text" id="otherLocationInput" placeholder="ระบุชื่อสถานที่นัดหมาย..." class="form-control hidden">
         </div>
 
         <div class="form-group">
@@ -56,24 +65,14 @@
             <textarea class="form-control" name="note" rows="3" placeholder="ระบุเหตุผลการนัดหมาย..."></textarea>
         </div>
 
-        <div id="message" class="notification-inline"></div>
-
         <div class="form-actions">
             <button id="submitBtn" class="submit-btn" onclick="submitAppointment()">ยืนยันการนัดหมาย</button>
-            <button onclick="window.location.href='index.html'" class="next-btn">กลับไปบันทึกคนไข้</button>
+            <button onclick="window.location.href='registration.html'" class="next-btn">กลับไปบันทึกผู้ป่วย</button>
         </div>
     </div>
-    <script>
-        // ฟังก์ชันซ่อน/แสดงช่อง "อื่นๆ" แบบไวๆ
-        function toggleOtherLocation() {
-            const select = document.getElementById('locationSelect');
-            const otherInput = document.getElementById('otherLocationInput');
-            otherInput.style.display = (select.value === 'อื่นๆ') ? 'block' : 'none';
-        }
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/validation.js"></script> 
     <script src="js/appointment.js"></script>
-
 </body>
 </html>

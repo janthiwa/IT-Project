@@ -1,390 +1,439 @@
-/* --- 1. การตั้งค่าพื้นฐาน --- */
+/* =========================================
+   [0] CUSTOM SCROLLBAR (เพิ่มความนุ่มนวลจ๊ะ)
+   ========================================= */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* =========================================
+   [1] GLOBAL SETTINGS
+   ========================================= */
 * {
     box-sizing: border-box;
-    font-family: 'Kanit', 'Segoe UI', Tahoma, sans-serif;
+    font-family: 'Kanit', sans-serif;
 }
 
 body {
-    background-color: #f4f7f6;
+    background: #f0f2f5;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    padding: 20px;
+    color: #1e293b;
 }
 
 .container {
     background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     width: 100%;
-    max-width: 600px;
+    max-width: 750px;
+    border: 1px solid #e2e8f0;
 }
 
-/* --- ส่วนที่ 2. แถบเมนูนำทาง ( 4 เมนู ด้านบน) --- */
+/* =========================================
+   [2] NAVIGATION & HEADERS
+   ========================================= */
 .top-nav {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 35px;
-    margin-top: 10px;
+    gap: 12px;
+    margin-bottom: 45px;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.1); 
+    border: 1px solid #eef2f6;
+    position: sticky;
+    top: 10px;
+    z-index: 100;
 }
 
 .nav-btn {
     text-decoration: none;
-    color: #ffffff;
-    background-color: #3498db;
-    padding: 10px 16px;
-    border-radius: 50px;
+    color: #64748b;
+    padding: 12px 24px;
+    border-radius: 12px;
     font-weight: 600;
-    font-size: 13px;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-btn:hover {
-    background-color: #e2e8f0;
     color: #4f46e5;
+    background: #f5f3ff;
     transform: translateY(-2px);
 }
 
 .nav-btn.active {
-    background-color: #4f46e5;
-    color: white;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #ffffff !important;
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
 }
 
-/* --- 3. การตกแต่งฟอร์ม --- */
 .header {
-    font-size: 26px;
-    font-weight: bold;
+    font-size: 30px;
+    font-weight: 800;
     text-align: center;
-    margin-bottom: 25px;
-    color: #333;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 12px;
+    margin-bottom: 35px;
+    color: #1e293b;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 18px;
-}
+/* =========================================
+   [3] FORM ELEMENTS
+   ========================================= */
+.form-group { margin-bottom: 28px; }
 
 .form-group label {
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #555;
-    font-size: 15px;
-}
-
-.form-control, textarea, select, .form {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    outline: none;
-    font-size: 15px;
-    background-color: #fcfcfc;
-    transition: all 0.3s;
     display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #475569;
+    font-size: 15px;
 }
 
-textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.form-control:focus, textarea:focus, select:focus, .form:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-}
-
-/* --- 4. ปุ่มกดยืนยันด้านล่างฟอร์ม --- */
-.form-actions, .center {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
-    padding-top: 20px;
-}
-
-/* --- 5. การจัดการปุ่มในพิมพ์ใบนัด --- */
-.user-item, .appointment-item {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #eee;
-}
-
-.button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 110px;
-}
-
-.button-group button, .btn-action {
+.form-control, input[type="text"], input[type="date"], textarea, select, #searchInput {
     width: 100%;
-    padding: 9px 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: white;
-    text-align: center;
+    padding: 14px 18px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.edit-btn { background-color: #4f46e5; }
-.print-btn-small { background-color: #3498db; }
-.delete-btn { background-color: #e74c3c; }
-
-button:hover {
-    filter: brightness(90%);
+.form-control:focus, #searchInput:focus {
+    border-color: #4f46e5;
+    background-color: #f8faff;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    outline: none;
     transform: translateY(-1px);
 }
 
-.action-header {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-}
-
-/* --- 6. ส่วนการแจ้งเตือน --- */
-.notification-inline {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-weight: bold;
-    display: none;
-    animation: slideDown 0.3s ease-out;
-}
-
-.success { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-.error { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
-
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- 🌟 7. ปุ่มหน้า Register (index.html) ให้เท่ากัน --- */
-.submit-btn, .next-btn {
-    min-width: 180px !important;
-    height: 48px !important;
-    border-radius: 50px !important;
-    border: none !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: white !important;
-}
-
-.submit-btn {
-    background-color: #4f46e5 !important;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-}
-
-.next-btn {
-    background-color: #0ea5e9 !important;
-    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
-}
-
-/* --- ตกแต่งหน้า Card --- */
-
-/* 1. ตัวเนื้อหาใบนัด */
-.card-content {
-    margin: 20px 0;
-    padding: 20px;
-    background-color: #fcfcfc;
-    border-radius: 10px;
-    border: 1px dashed #d1d5db;
-}
-
-/* 2. จัดระเบียบแถวข้อมูลให้แยกซ้าย-ขวา */
-.info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.info-row:last-child {
-    border-bottom: none;
-}
-
-/* 3. แต่งหัวข้อ */
-.label {
-    font-weight: 600;
-    color: #4b5563;
-    font-size: 15px;
-}
-
-/* 4. แต่งข้อมูล */
-.value {
-    color: #111827;
-    font-weight: 500;
-    text-align: right;
-    max-width: 60%;
-}
-
-/* 5. จัดการส่วนปุ่มและลิงก์ข้างล่าง */
-.print-actions {
-    margin-top: 30px;
-    text-align: center;
-}
-
-.back-link-container {
-    margin-top: 15px;
-}
-
-.back-link {
-    text-decoration: none;
-    color: #9ca3af;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-.back-link:hover {
-    color: #4f46e5;
-    text-decoration: underline;
-}
-
-
-@media print {
-    .print-actions, .top-nav {
-        display: none !important;
-    }
-    .container {
-        box-shadow: none !important;
-        border: none !important;
-        padding: 0 !important;
-    }
-    .card-content {
-        border: 1px solid #eee;
-    }
-}
-
-/* ซ่อนช่องกรอกสถานที่ไว้ตั้งแต่ต้น */
-#otherLocationInput {
-    display: none;
-}
-
-/* การตกแต่งช่องค้นหา */
-.search-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.option-group, .disease-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
     gap: 15px;
-    margin-bottom: 25px;
-    width: 100%;
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
 }
 
-.search-label {
-    font-weight: 600;
-    color: #4b5563;
-    font-size: 15px;
-    white-space: nowrap;
+/* จัดการช่อง Select */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    padding-right: 40px !important;
+    
+    background-image: url('../images/arrow-down.svg'); 
+    background-repeat: no-repeat;
+    background-position: calc(100% - 15px) center;
+    background-size: 14px;
 }
 
-.input-group {
-    position: relative;
-    width: 100%;
-    max-width: 350px;
+select:focus {
+    background-image: url('../images/arrow-down-focus.svg');
 }
 
-#searchInput {
-    width: 100%;
-    padding: 10px 40px 10px 15px;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    outline: none;
-    transition: all 0.3s ease;
-    background-color: #fcfcfc;
+textarea {
+    min-height: 120px;
+    resize: vertical;
+    max-width: 100%;
+    overflow-y: auto;
 }
 
-#searchInput:focus {
-    border-color: #4f46e5;
-    background-color: #ffffff;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+/* =========================================
+   [4] SEARCH & NOTIFICATION
+   ========================================= */
+.search-wrapper {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #e2e8f0;
 }
+
+.input-group { position: relative; width: 100%; }
+#searchInput { padding-left: 45px !important; }
 
 .search-icon {
     position: absolute;
-    right: 12px;
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
     color: #94a3b8;
-    pointer-events: none;
+    font-size: 18px;
 }
 
-/* ส่วนตกแต่งกล่องแจ้งเตือน "ไม่พบข้อมูล" */
-#noDataMessage {
-    display: none;
-    text-align: center;
-    color: #d9534f;
-    background-color: #f8d7da;
-    padding: 15px 20px;
-    margin: 20px auto;
-    border-radius: 8px;
-    border: 1px solid #f5c6cb;
-    font-weight: bold;
-    max-width: 80%;
-}
+.hidden { display: none !important; }
 
-/* --- ส่วนสำหรับหน้า Connect --- */
-.connect-container {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: 'Sarabun', sans-serif;
-    background-color: #f8f9fa;
-}
-
-.connect-card {
-    text-align: center;
-    padding: 50px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    max-width: 500px;
-    width: 90%;
-}
-
-.connect-result {
+.error-box {
+    color: #e11d48 !important;
+    background-color: #fff1f2 !important;
+    padding: 25px 35px;
+    border-radius: 16px;
+    border: 2px solid #fecdd3 !important;
     margin-top: 25px;
-    font-size: 1.3rem;
-    color: #555;
+    margin-bottom: 25px;
+    font-size: 15px;
+    
+    text-align: left !important; 
 }
 
-.btn-back {
-    display: inline-block;
+.error-box ul {
+    margin: 10px 0 0 20px;
+    padding: 0;
+}
+
+.error-box li {
+    margin-bottom: 8px;
+}
+
+/* =========================================
+   GLOBAL VARIABLES
+   ========================================= */
+:root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-soft: #f0f4ff;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --white: #ffffff;
+    --text-dark: #1e293b;
+    --radius-lg: 20px;
+}
+
+/* =========================================
+   SWEETALERT2 CUSTOM
+   ========================================= */
+
+.swal2-popup {
+    border-radius: var(--radius-lg) !important;
+    font-family: 'Kanit', sans-serif !important;
+    padding: 2em !important;
+}
+
+.swal2-confirm {
+    background-color: var(--primary) !important;
+    background: linear-gradient(135deg, #6366f1, var(--primary)) !important;
+    border-radius: 12px !important;
+    padding: 12px 30px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s !important;
+}
+
+.swal2-confirm:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3) !important;
+}
+
+.swal2-confirm:hover, 
+.swal2-cancel:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+    filter: brightness(1.1);
+}
+
+.swal2-confirm:active, 
+.swal2-cancel:active {
+    transform: translateY(-1px) scale(0.98) !important;
+    transition: all 0.1s !important;
+}
+
+.swal2-cancel {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.swal2-cancel {
+    background-color: var(--danger) !important;
+    border-radius: 12px !important;
+    padding: 12px 30px !important;
+    font-weight: 600 !important;
+}
+
+.swal2-icon.swal2-warning {
+    border-color: var(--warning) !important;
+    color: var(--warning) !important;
+}
+
+.swal2-icon.swal2-success {
+    border-color: var(--success) !important;
+    color: var(--success) !important;
+}
+
+/* =========================================
+   [5] LIST ITEMS (อัปเกรดให้อ่านง่ายขึ้นจ๊ะ)
+   ========================================= */
+.user-item, .appointment-item {
+    background: #ffffff;
+    padding: 15px 25px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.user-item:hover, .appointment-item:hover {
+    transform: translateX(5px);
+    border-color: #4f46e5;
+    box-shadow: 0 5px 15px rgba(79, 70, 229, 0.08);
+}
+
+.user-item span, .appointment-item span, .app-info {
+    font-size: 16px !important;
+    line-height: 1.8;
+    color: #334155;
+    font-weight: 400;
+}
+
+.user-item strong, .appointment-item strong, .app-info strong {
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    color: #4f46e5;
+    background: #f0f4ff;
+    padding: 2px 8px;
+    border-radius: 8px;
+    margin: 0 4px;
+}
+
+.edit-btn, .delete-btn, .print-btn-small {
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+}
+
+/* =========================================
+   [6] BUTTONS & ACTIONS 
+   ========================================= */
+.form-actions { display: flex; justify-content: center; gap: 15px; margin-top: 40px; }
+
+/* กลุ่มปุ่มหลัก (ปุ่มใหญ่) */
+.submit-btn, .next-btn { 
+    color: white; 
+    border: none; 
+    padding: 14px 28px; 
+    border-radius: 12px; 
+    cursor: pointer; 
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+}
+
+.submit-btn { background: linear-gradient(135deg, #059669, #10b981); }
+.next-btn { background: linear-gradient(135deg, #021b79, #0575e6); }
+
+/* กลุ่มปุ่มจัดการ (ปุ่มเล็ก) */
+.button-group { display: flex; gap: 10px; }
+
+.edit-btn, .delete-btn, .print-btn-small { 
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+}
+
+.edit-btn { background: linear-gradient(135deg, #a8c0ff, #3f2b96); }
+.delete-btn { background: linear-gradient(135deg, #ff5f6d, #ffc371); }
+.print-btn-small { background: linear-gradient(135deg, #3cd16e, #33CCCC); }
+
+/* [EFFECT] จังหวะเมาส์ชี้ (Hover) */
+.submit-btn:hover, .next-btn:hover, 
+.edit-btn:hover, .delete-btn:hover, .print-btn-small:hover { 
+    filter: brightness(1.1); 
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* [EFFECT] จังหวะกดปุ่ม (Active) */
+.submit-btn:active, .next-btn:active, 
+.edit-btn:active, .delete-btn:active, .print-btn-small:active { 
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.1s;
+}
+
+/* =========================================
+   [7] PRINT SETTINGS
+   ========================================= */
+@media print {
+    .top-nav, 
+    .form-actions, 
+    .search-wrapper, 
+    .button-group, 
+    .print-actions, 
+    .back-link,
+    button { 
+        display: none !important; 
+    }
+
+    body { 
+        background: white !important; 
+        padding: 0 !important; 
+        margin: 0 !important; 
+    }
+
+    .container { 
+        box-shadow: none !important; 
+        border: none !important; 
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    html, body {
+        height: auto;
+        overflow: hidden;
+    }
+
+    .card-content {
+        border: 2px solid #363636 !important;
+        background: white !important;
+        margin: 0 !important;
+        page-break-inside: avoid
+    }
+}
+
+/* =========================================
+   [8] APPOINTMENT CARD
+   ========================================= */
+.card-content {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 20px;
+    padding: 35px;
+    margin: 25px 0;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.print-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
     margin-top: 30px;
-    padding: 12px 25px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-    transition: 0.3s;
 }
 
-.btn-back:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
+.print-btn {
+    min-width: 200px;
+    text-align: center;
 }

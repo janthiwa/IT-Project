@@ -1,56 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment Card</title>
+    <title>ใบนัดพบแพทย์ - โรงพยาบาลของฉัน</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h2 class="header">ใบนัดพบแพทย์</h2>
-        
-        <div id="cardContent" class="card-content">
-            <p>กำลังโหลดข้อมูลใบนัดของผู้ป่วย...</p>
-        </div>
-
-        <div class="print-actions">
-            <button class="submit-btn" onclick="window.print()">พิมพ์ใบนัดหมาย</button>
-            
-            <div class="back-link-container">
-                <a href="appointment-list.html" class="back-link">กลับหน้าตารางนัดหมาย</a>
+<body class="print-body">
+    <div class="container appointment-card">
+        <div class="card-header">
+            <div class="header-text">
+            <h1>ใบแจ้งนัดหมายพบแพทย์</h1>
+            <p>โรงพยาบาลพรีเมียมพลาซ่า | โทร. 02-xxx-xxxx</p>
             </div>
+    </div>
+
+    <div class="card-title-section">
+        <h2 class="header">ใบนัดพบแพทย์</h2>
+    </div>
+        
+    <div id="cardContent" class="card-content">
+        <div class="loading-state">
+        <p>กำลังดึงข้อมูลใบนัดจากระบบพรีเมียม...</p>
+        </div>
+    </div>
+
+    <div class="print-actions">
+        <button class="next-btn print-btn" onclick="window.print()">พิมพ์ใบนัดหมาย</button>
+        <a href="appointment-list.html" class="back-link">กลับไปหน้าตารางนัดหมาย</a>
+    </div>
+
+        <div class="card-footer" style="margin-top: 40px; text-align: center; color: #94a3b8; font-size: 12px;">
+        <p>กรุณานำใบนัดนี้มาแสดงต่อเจ้าหน้าที่ก่อนเวลานัด 15 นาที</p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        window.onload = async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const appId = urlParams.get('id');
-
-            if (appId) {
-                try {
-                    const response = await axios.get(`http://localhost:8000/appointment-card/${appId}`);
-                    const data = response.data;
-
-
-                    document.getElementById('cardContent').innerHTML = `
-                        <div class="info-row"><span class="label">ชื่อ-นามสกุล:</span> <span class="value">${data.firstname} ${data.lastname}</span></div>
-                        <div class="info-row"><span class="label">อายุ:</span> <span class="value">${data.age} ปี</span></div>
-                        <div class="info-row"><span class="label">ผู้นัดพบ:</span> <span class="value">${data.doctor_name || 'ไม่ระบุ'}</span></div>
-                        <div class="info-row"><span class="label">วันที่นัดหมาย:</span> <span class="value">${new Date(data.app_date).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' })}</span></div>
-                        <div class="info-row"><span class="label">เวลานัดหมาย:</span> <span class="value">${data.app_time.substring(0, 5)} น.</span></div>
-                        <div class="info-row"><span class="label">สถานที่:</span> <span class="value">${data.location}</span></div>
-                        <div class="info-row"><span class="label">อาการ/โรคประจำตัว:</span> <span class="value">${data.congenital_disease || 'ไม่มี'}</span></div>
-                        <div class="info-row"><span class="label">หมายเหตุ:</span> <span class="value">${data.note || 'ไม่มี'}</span></div>
-                    `;
-                } catch (error) {
-                    console.error('เกิดข้อผิดพลาด:', error);
-                    document.getElementById('cardContent').innerHTML = '<p class="error-text">ไม่พบข้อมูลใบนัดหมาย</p>';
-                }
-            }
-        };
-    </script>
+    <script src="js/card.js"></script> 
 </body>
 </html>

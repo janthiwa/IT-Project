@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ลงทะเบียนผู้ป่วย - ระบบโรงพยาบาล</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
-            <nav class="top-nav">
-            <a href="index.html" class="nav-btn">บันทึกคนไข้</a>
+        <nav class="top-nav">
+            <a href="registration.html" class="nav-btn active">บันทึกคนไข้</a>
             <a href="user.html" class="nav-btn">รายชื่อผู้ป่วย</a>
             <a href="appointment-list.html" class="nav-btn">ตารางนัดหมาย</a>
             <a href="appointment.html" class="nav-btn">ลงใบนัดหมายใหม่</a>
         </nav>
 
         <h2 class="header">บันทึกระเบียบประวัติการรักษา</h2>
+
+        <div id="message"></div>
 
         <div class="form-group">
             <label>ชื่อผู้ป่วย</label>
@@ -27,27 +30,22 @@
             <input class="form-control" name="lastname" type="text" placeholder="ระบุนามสกุล...">
         </div>
 
-       <div class="form-group">
-       <label>เลขบัตรประชาชนผู้ป่วย</label>
-       <input class="form-control" 
-           name="id_card" 
-           type="text" 
-           inputmode="numeric" 
-           maxlength="13" 
-           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-           placeholder="ระบุเลขบัตรประชาชน 13 หลัก...">
+        <div class="form-group">
+            <label>เลขบัตรประชาชนผู้ป่วย</label>
+            <input class="form-control" name="id_card" type="text" inputmode="numeric" maxlength="13" 
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="ระบุเลขบัตรประชาชน 13 หลัก...">
         </div>
 
-       <div class="form-group">
-       <label>อายุผู้ป่วย</label> 
-       <input class="form-control" 
-           name="age" 
-           type="number" 
-           min="0" 
-           max="120" 
-           oninput="if(value > 120) value = 120; if(value < 0) value = 0;"
-           placeholder="ระบุอายุ...">
-</div>
+        <div class="form-group">
+            <label for="birthday">วันเดือนปีเกิด</label>
+            <input type="date" id="birthday" name="birthday" required>
+        </div>
+
+        <div class="form-group">
+            <label>อายุผู้ป่วย</label> 
+            <input class="form-control" name="age" type="number" min="0" max="120" 
+                   oninput="if(value > 120) value = 120; if(value < 0) value = 0;" placeholder="ระบุอายุ...">
+        </div>
 
         <div class="form-group">
             <label>วันที่เข้าตรวจ</label>
@@ -56,7 +54,8 @@
 
         <div class="form-group">
             <label>เพศผู้ป่วย</label> 
-            <div class="option-group"> <label><input name="gender" type="radio" value="ชาย"> ชาย</label>
+            <div class="option-group"> 
+                <label><input name="gender" type="radio" value="ชาย"> ชาย</label>
                 <label><input name="gender" type="radio" value="หญิง"> หญิง</label>
                 <label><input name="gender" type="radio" value="อื่นๆ"> อื่นๆ</label>
             </div>
@@ -64,15 +63,23 @@
 
         <div class="form-group">
             <label>ระบุโรคประจำตัวผู้ป่วย</label>
-            <div class="option-group" style="display: block;"> <div><input name="congenital_disease" type="checkbox" value="ไม่มี" onchange="handleCheckboxChange(this)"> ไม่มี</div>
+            <div class="disease-grid"> 
+                <div><input name="congenital_disease" type="checkbox" value="ไม่มี" onchange="handleCheckboxChange(this)"> ไม่มี</div>
                 <div><input name="congenital_disease" type="checkbox" value="โรคความดันโลหิต" onchange="handleCheckboxChange(this)"> โรคความดันโลหิต</div>
                 <div><input name="congenital_disease" type="checkbox" value="โรคเบาหวาน" onchange="handleCheckboxChange(this)"> โรคเบาหวาน</div>
                 <div><input name="congenital_disease" type="checkbox" value="โรคไต" onchange="handleCheckboxChange(this)"> โรคไต</div>
                 <div><input name="congenital_disease" type="checkbox" value="โรคกรดไหลย้อน" onchange="handleCheckboxChange(this)"> โรคกรดไหลย้อน</div>
                 <div><input name="congenital_disease" type="checkbox" value="โรคหัวใจ" onchange="handleCheckboxChange(this)"> โรคหัวใจ</div>
-                <div style="margin-top: 5px;">
+                <div><input name="congenital_disease" type="checkbox" value="โรคหอบหืด" onchange="handleCheckboxChange(this)"> โรคหอบหืด</div>
+                <div><input name="congenital_disease" type="checkbox" value="โรคภูมิแพ้" onchange="handleCheckboxChange(this)"> โรคภูมิแพ้</div>
+                <div><input name="congenital_disease" type="checkbox" value="ไขมันในเลือดสูง" onchange="handleCheckboxChange(this)"> ไขมันในเลือดสูง</div>
+                <div><input name="congenital_disease" type="checkbox" value="โรคตับ" onchange="handleCheckboxChange(this)"> โรคตับ</div>
+                <div><input name="congenital_disease" type="checkbox" value="โรคไทรอยด์" onchange="handleCheckboxChange(this)"> โรคไทรอยด์</div>
+                <div><input name="congenital_disease" type="checkbox" value="ไมเกรน" onchange="handleCheckboxChange(this)"> ไมเกรน</div>
+                
+                <div class="other-disease-wrapper">
                     <input name="congenital_disease" type="checkbox" value="อื่นๆ" onchange="handleCheckboxChange(this)" id="otherCheckbox"> อื่นๆ
-                    <input type="text" id="otherDiseaseDetail" name="other_disease_detail" class="form-control" style="display: inline-block; width: auto; margin-left: 10px;" placeholder="โปรดระบุ...">
+                    <input type="text" id="otherDiseaseDetail" name="other_disease_detail" class="form-control other-input" placeholder="โปรดระบุ...">
                 </div>
             </div>
         </div>
@@ -92,6 +99,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="js/validation.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/registration.js"></script> 
 </body>
 </html>

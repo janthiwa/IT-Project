@@ -1,63 +1,44 @@
 const BASE_URL = 'http://localhost:8000';
-let mode = 'CREATE'; // โหมดเริ่มต้น
-let selectedId = ''; // เก็บ ID ของนัดหมายที่จะแก้ไข
+let mode = 'CREATE';
+let selectedId = '';
 
 window.onload = async () => {
-    // 1. โหลดรายชื่อคนไข้ใส่ Dropdown ก่อนเสมอ
     await loadPatients();
-
-
     const urlParams = new URLSearchParams(window.location.search);
-    const rawId = urlParams.get('id'); 
-    const id = rawId ? rawId.split(':')[0] : null; 
+    const id = urlParams.get('id')?.split(':')[0]; 
 
     if (id) {
         mode = 'EDIT';
         selectedId = id;
-        console.log('โหมดแก้ไขนัดหมาย ID:', id);
-
         try {
-            // ดึงข้อมูลนัดหมายเดิมมาจาก Backend
             const response = await axios.get(`${BASE_URL}/appointments/${id}`);
             const app = response.data;
-
-
+            // เติมข้อมูลลงฟอร์ม
             document.getElementById('userSelect').value = app.user_id;
             document.querySelector('input[name="doctor_name"]').value = app.doctor_name || '';
-            
-            // จัดรูปแบบวันที่ให้เข้ากับ input type="date" (YYYY-MM-DD)
             if (app.app_date) {
-                const date = new Date(app.app_date).toISOString().split('T')[0];
-                document.querySelector('input[name="app_date"]').value = date;
+                document.querySelector('input[name="app_date"]').value = new Date(app.app_date).toISOString().split('T')[0];
             }
-            
             document.querySelector('input[name="app_time"]').value = app.app_time || '';
             document.querySelector('textarea[name="note"]').value = app.note || '';
 
-
-            const locationSelect = document.getElementById('locationSelect');
-            const otherInput = document.getElementById('otherLocationInput');
-            const options = Array.from(locationSelect.options).map(opt => opt.value);
+            // จัดการเรื่องสถานที่
+            const locSelect = document.getElementById('locationSelect');
+            const otherInp = document.getElementById('otherLocationInput');
+            const options = Array.from(locSelect.options).map(opt => opt.value);
             
             if (options.includes(app.location)) {
-
-                locationSelect.value = app.location;
-                otherInput.style.display = 'none';
-                otherInput.value = '';
+                locSelect.value = app.location;
+                otherInp.style.display = 'none';
             } else {
-
-                locationSelect.value = 'อื่นๆ';
-                otherInput.value = app.location;
-                otherInput.style.display = 'block';
+                locSelect.value = 'อื่นๆ';
+                otherInp.value = app.location;
+                otherInp.style.display = 'block';
             }
-
-
             document.querySelector('.header').innerText = 'แก้ไขใบนัดหมาย';
             document.querySelector('.submit-btn').innerText = 'ยืนยันการแก้ไขนัดหมาย';
-
         } catch (error) {
-            console.error('ดึงข้อมูลนัดหมายล้มเหลว:', error);
-            alert('ดึงข้อมูลมาแก้ไขไม่ได้ ลองเช็ค Server ดูนะ');
+            console.error('ดึงข้อมูลพลาด:', error);
         }
     }
 };
@@ -65,105 +46,101 @@ window.onload = async () => {
 const loadPatients = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/users`);
-        const patients = response.data;
         const userSelect = document.getElementById('userSelect');
-
-        patients.forEach(patient => {
-            const option = document.createElement('option');
-            option.value = patient.id;
-            option.innerText = `${patient.firstname} ${patient.lastname}`;
-            userSelect.appendChild(option);
+        response.data.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.id;
+            opt.innerText = `${p.firstname} ${p.lastname}`;
+            userSelect.appendChild(opt);
         });
-
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const userIdFromUrl = urlParams.get('userId');
-        if (userIdFromUrl && userSelect) {
-            userSelect.value = userIdFromUrl;
-        }
-
+        const userIdFromUrl = new URLSearchParams(window.location.search).get('userId');
+        if (userIdFromUrl) userSelect.value = userIdFromUrl;
     } catch (error) {
-        console.error('ดึงข้อมูลคนไข้ไม่สำเร็จ:', error);
+        console.error('โหลดผู้ป่วยพลาด:', error);
     }
 };
 
 const submitAppointment = async () => {
     const messageDOM = document.getElementById('message');
-    
-
-    let locationSelectValue = document.getElementById('locationSelect').value;
-    let otherLocation = document.getElementById('otherLocationInput').value;
-    let finalLocation = locationSelectValue;
-
-
-    if (locationSelectValue === 'อื่นๆ') {
-        finalLocation = otherLocation.trim() ? otherLocation : '';
-    }
-
+    const locVal = document.getElementById('locationSelect').value;
+    const otherLoc = document.getElementById('otherLocationInput').value;
 
     const appointmentData = {
         user_id: document.getElementById('userSelect').value,
         doctor_name: document.querySelector('input[name="doctor_name"]').value,
         app_date: document.querySelector('input[name="app_date"]').value,
         app_time: document.querySelector('input[name="app_time"]').value,
-        location: finalLocation,
+        location: locVal === 'อื่นๆ' ? otherLoc.trim() : locVal,
         note: document.querySelector('textarea[name="note"]').value
     };
 
-
-    let errors = [];
-    if (!appointmentData.user_id) errors.push('กรุณาเลือกคนไข้');
-    if (!appointmentData.doctor_name) errors.push('กรุณากรอกชื่อคุณหมอ');
-    if (!appointmentData.app_date) errors.push('กรุณาเลือกวันที่นัดหมาย');
-    if (!appointmentData.app_time) errors.push('กรุณาเลือกเวลานัดหมาย');
-    if (!appointmentData.location) errors.push('กรุณาระบุสถานที่ (ถ้าเลือก "อื่นๆ" อย่าลืมพิมพ์ระบุด้วยนะ)');
-    if (!appointmentData.note) errors.push('กรุณากรอกหมายเหตุ');
-    
+const errors = validateAppointment(appointmentData); 
 
     if (errors.length > 0) {
-        messageDOM.innerText = errors[0]; 
-        messageDOM.className = 'notification-inline error';
-        messageDOM.style.display = 'block';
+        showErrors(errors, messageDOM, appointmentData);
         return;
     }
 
     try {
-        let successMessage = 'บันทึกการนัดหมายสำเร็จแล้ว'; 
         let finalId = selectedId;
+        let successText = mode === 'CREATE' ? 'บันทึกนัดหมายสำเร็จแล้ว' : 'อัปเดตนัดหมายเรียบร้อยแล้ว';
 
         if (mode === 'CREATE') {
-            const response = await axios.post(`${BASE_URL}/appointments`, appointmentData);
-            finalId = response.data.insertId;
+            const res = await axios.post(`${BASE_URL}/appointments`, appointmentData);
+            finalId = res.data.insertId;
         } else {
             await axios.put(`${BASE_URL}/appointments/${selectedId}`, appointmentData);
-            successMessage = 'แก้ไขข้อมูลสำเร็จแล้ว';
         }
-        
-        messageDOM.innerText = successMessage;
-        messageDOM.className = 'notification-inline success';
-        messageDOM.style.display = 'block';
-        
-        alert(successMessage + '! กำลังเปิดใบนัดหมาย');
 
+        messageDOM.innerHTML = `<div class="success-box">✨ ${successText} กำลังพาไปหน้าใบนัด...</div>`;
+        messageDOM.classList.add('show');
 
-        window.location.href = `card.html?id=${finalId}`;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        setTimeout(() => {
+            window.location.href = `card.html?id=${finalId}`;
+        }, 1500);
 
     } catch (error) {
-        console.error('บันทึกไม่สำเร็จ:', error);
-        messageDOM.innerText = 'เกิดข้อผิดพลาดในการบันทึก';
-        messageDOM.className = 'notification-inline error';
-        messageDOM.style.display = 'block';
+        console.error('Error:', error);
+        messageDOM.innerHTML = `<div class="error-box">บันทึกไม่สำเร็จ เช็กเซิร์ฟเวอร์ด่วน!</div>`;
+        messageDOM.classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+};
+
+const showErrors = (errors, dom, data) => {
+    const allInputs = document.querySelectorAll('input, textarea, select');
+    allInputs.forEach(el => el.classList.remove('input-error'));
+
+    let htmlList = errors.map(err => `<li>${err}</li>`).join('');
+    dom.innerHTML = `
+        <div class="error-box">
+            <strong>กรุณากรอกข้อมูลนัดหมายให้ครบถ้วน:</strong>
+            <ul>${htmlList}</ul>
+        </div>`;
+    dom.classList.add('show');
+
+    const addError = (selector) => {
+        const el = document.querySelector(selector) || document.getElementById(selector);
+        if (el) el.classList.add('input-error');
+    };
+
+    if (!data.user_id) addError('#userSelect');
+    if (!data.doctor_name) addError('input[name="doctor_name"]');
+    if (!data.app_date) addError('input[name="app_date"]');
+    if (!data.app_time) addError('input[name="app_time"]');
+    if (!data.location) {
+        addError('#locationSelect');
+        if (document.getElementById('locationSelect').value === 'อื่นๆ') addError('#otherLocationInput');
+    }
+    if (!data.note) addError('textarea[name="note"]');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 function toggleOtherLocation() {
     const select = document.getElementById('locationSelect');
     const otherInput = document.getElementById('otherLocationInput');
-    
-    if (select.value === 'อื่นๆ') {
-        otherInput.style.display = 'block';
-    } else {
-        otherInput.style.display = 'none';
-        otherInput.value = '';
-    }
+    otherInput.style.display = select.value === 'อื่นๆ' ? 'block' : 'none';
 }

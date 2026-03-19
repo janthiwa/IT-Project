@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ตารางนัดหมายผู้ป่วย - ระบบโรงพยาบาล</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="container"> <nav class="top-nav">
-            <a href="index.html" class="nav-btn">บันทึกคนไข้</a>
+    <div class="container"> 
+        <nav class="top-nav">
+            <a href="registration.html" class="nav-btn">บันทึกผู้ป่วย</a>
             <a href="user.html" class="nav-btn">รายชื่อผู้ป่วย</a>
             <a href="appointment-list.html" class="nav-btn active">ตารางนัดหมาย</a>
             <a href="appointment.html" class="nav-btn">ลงใบนัดหมายใหม่</a>
@@ -19,17 +21,18 @@
         <div class="search-wrapper">
             <label for="searchInput" class="search-label">ค้นหาข้อมูล:</label>
             <div class="input-group">
-                <input type="text" id="searchInput" placeholder="พิมพ์รหัสคนไข้: HN-0048..." onkeyup="searchPatient()">
+                <input type="text" id="searchInput" placeholder="พิมรหัสผู้ป่วย HN-0048...">
                 <i class="search-icon">🔍</i>
             </div>
         </div>
 
-        <div id="noDataMessage" class="no-data-alert" style="display: none;">ไม่พบข้อมูลที่ค้นหา... กรุณาลองตรวจสอบการสะกดคำใหม่อีกครั้ง
-        </div>
+        <div id="noDataMessage" class="error-box hidden">🔍 ไม่พบข้อมูลที่ค้นหา... กรุณาลองตรวจสอบการสะกดคำใหม่อีกครั้ง</div>
 
         <div id="appointment-container"></div>
+    </div> 
 
-    </div> <script src="https://cdn.jsdelivr.net/npm/axios@1.1.3/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.3/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/appointment-list.js"></script>
 </body>
 </html>
