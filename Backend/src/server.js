@@ -1,18 +1,19 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const db = require('./src/config/db');
-const userRoutes = require('./src/routes/userRoutes');
-const appointmentRoutes = require('./src/routes/appointmentRoutes');
+require('dotenv').config();
+const app = require('./app');
+const db = require('./config/db');
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+const PORT = process.env.PORT || 8821;
 
-app.use('/users', userRoutes);
-app.use('/appointments', appointmentRoutes);
+const startServer = async () => {
+    try {
+        await db.init();
+        app.listen(PORT, () => {
+            console.log(`Server is running on http://localhost:${PORT}`);
+            console.log('ความลับ (Password) ถูกซ่อนไว้!');
+        });
+    } catch (error) {
+        console.error('อุ๊ย! สตาร์ทเครื่องไม่ได้:', error);
+    }
+};
 
-app.listen(8000, async () => {
-    await db.init();
-    console.log(`Server is running on port 8000 `);
-});
+startServer();

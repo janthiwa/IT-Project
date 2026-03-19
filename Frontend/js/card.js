@@ -6,7 +6,7 @@ window.onload = async () => {
 
     if (appId) {
         try {
-            const response = await axios.get(`${BASE_URL}/appointment-card/${appId}`);
+            const response = await axios.get(`${BASE_URL}/appointments/card/${appId}`);
             const data = response.data;
 
             // จัดรูปแบบวันที่ไทย

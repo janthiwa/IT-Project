@@ -108,7 +108,7 @@ const deleteAppointment = async (id) => {
                 icon: 'success'
             });
 
-            await loadData();
+            await location.reload();
             
         } catch (error) {
             console.error('ยกเลิกนัดไม่สำเร็จ:', error);
