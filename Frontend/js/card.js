@@ -1,12 +1,12 @@
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'http://localhost:8000/api';
 
 window.onload = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const appId = urlParams.get('id');
 
-    if (appId) {
+    if (appId && appId !== 'undefined' && appId !== 'null') {
         try {
-            const response = await axios.get(`${BASE_URL}/appointments/card/${appId}`);
+            const response = await axios.get(`${BASE_URL}/appointments/${appId}`);
             const data = response.data;
 
             // จัดรูปแบบวันที่ไทย
@@ -28,7 +28,11 @@ window.onload = async () => {
             `;
         } catch (error) {
             console.error('เกิดข้อผิดพลาด:', error);
-            document.getElementById('cardContent').innerHTML = '<p class="error-text">ไม่พบข้อมูลใบนัดหมาย</p>';
+            document.getElementById('cardContent').innerHTML = '<p class="error-text">ไม่พบข้อมูลใบนัดหมาย (API Error)</p>';
         }
+    } else {
+
+        console.warn('ID นัดหมายไม่ถูกต้อง:', appId);
+        document.getElementById('cardContent').innerHTML = '<p class="error-text">ไม่พบรหัสการนัดหมาย กรุณาลองใหม่อีกครั้ง</p>';
     }
 };

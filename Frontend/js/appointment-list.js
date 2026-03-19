@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'http://localhost:8000/api';
 
 window.onload = async () => {
 
@@ -58,7 +58,7 @@ const loadAppointments = async () => {
             return;
         }
 
-        response.data.forEach(app => {
+response.data.forEach(app => {
             const thaiDate = new Date(app.app_date).toLocaleDateString('th-TH', {
                 year: 'numeric', month: 'long', day: 'numeric'
             });
