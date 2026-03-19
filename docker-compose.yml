@@ -4,13 +4,12 @@ services:
   db:
     image: mysql:8.0
     container_name: mysql_db_821
-
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: webdb
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     ports:
-      - "8820:3306"
+      - "${DB_PORT}:3306"
     volumes:
       - mysql_data_821:/var/lib/mysql
     networks:
@@ -23,8 +22,8 @@ services:
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
-      PMA_USER: root
-      PMA_PASSWORD: root
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASSWORD}
       UPLOAD_LIMIT: 64M
     ports:
       - "8822:80"
