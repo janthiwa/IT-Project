@@ -26,7 +26,7 @@ const checkConnection = async () => {
 
 } catch (error) {
     statusTitle.innerText = "แย่จัง! เชื่อมต่อล้มเหลว!";
-    statusTitle.className = "status-error";           
+    statusTitle.className = "status-error";
     resultBox.innerText = "กรุณาเช็คว่ารัน Backend และ Database หรือยัง?";
 
 Swal.fire({

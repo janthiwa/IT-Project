@@ -1,7 +1,6 @@
 const BASE_URL = 'http://localhost:8000/api';
 window.onload = async () => {
 await loadAppointments();
-
     const searchInput = document.getElementById('searchInput');
     const noDataMsg = document.getElementById('noDataMessage');
 

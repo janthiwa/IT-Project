@@ -42,7 +42,7 @@ const validate = (req, res, next) => {
   });
 };
 
-module.exports = { 
+module.exports = {
   appointmentValidationRules, 
   userValidationRules, 
   validate 

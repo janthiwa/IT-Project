@@ -27,8 +27,8 @@ const values = [id_card, firstname, lastname, birthday, age, gender, checkup_dat
 const [results] = await db.execute(query, values);
 
     res.status(201).json({ 
-    message: 'บันทึกข้อมูลผู้ป่วยสำเร็จ', 
-    id: results.insertId 
+    message: 'บันทึกข้อมูลผู้ป่วยสำเร็จ',
+    id: results.insertId
 });
 } catch (error) {
 console.error("SQL Error:", error.message);

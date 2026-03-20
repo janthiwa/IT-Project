@@ -37,10 +37,9 @@ pool.getConnection((err, connection) => {
         console.error(`Error Code: ${err.code} | Message: ${err.message}`);
 }
 } else {
-    console.log(`✅ Database Connected: ${dbConfig.database} (Ready to serve)`);
+    console.log(`Database Connected: ${dbConfig.database} (Ready to serve)`);
     connection.release();
     }
 });
-
 
 module.exports = pool.promise();

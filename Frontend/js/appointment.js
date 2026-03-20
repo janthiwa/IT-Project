@@ -131,13 +131,13 @@ const submitAppointment = async () => {
             await axios.put(`${BASE_URL}/appointments/${selectedId}`, appointmentData);
         }
 
-        messageDOM.innerHTML = `<div class="success-box">✨ ${successText}</div>`;
+        messageDOM.innerHTML = `<div class="success-box"> ${successText}</div>`;
         setTimeout(() => {
             window.location.href = mode === 'CREATE' ? `card.html?id=${finalId}` : 'appointment-list.html';
         }, 1500);
 
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error('Error:', error);
         messageDOM.innerHTML = `<div class="error-box">บันทึกไม่สำเร็จ: ระบบขัดข้อง</div>`;
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
