@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const appoController = require('../controllers/appointmentController');
+const appointmentController = require('../controllers/appointmentController');
+const { appointmentValidationRules, validate } = require('../middlewares/validator');
 
-router.get('/', appoController.getAllAppointments);
-router.get('/:id', appoController.getAppointmentCard);
-router.get('/card/:id', appoController.getAppointmentCard);
-router.put('/:id', appoController.updateAppointment);
-router.post('/', appoController.createAppointment);
-router.delete('/:id', appoController.deleteAppointment);
+router.get('/', appointmentController.getAllAppointments);
+router.post('/', appointmentValidationRules(), validate, appointmentController.createAppointment);
+router.get('/:id', appointmentController.getAppointmentById);
+router.put('/:id', appointmentValidationRules(), validate, appointmentController.updateAppointment);
+router.delete('/:id', appointmentController.deleteAppointment);
 
 module.exports = router;
