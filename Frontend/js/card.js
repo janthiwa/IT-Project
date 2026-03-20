@@ -1,38 +1,34 @@
 const BASE_URL = 'http://localhost:8000/api';
-
 window.onload = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const appId = urlParams.get('id');
-
     if (appId && appId !== 'undefined' && appId !== 'null') {
         try {
-            const response = await axios.get(`${BASE_URL}/appointments/${appId}`);
-            const data = response.data;
+//ดึงข้อมูลนัดหมายจาก API
+    const response = await axios.get(`${BASE_URL}/appointments/${appId}`);
+    const data = response.data;
 
-            // จัดรูปแบบวันที่ไทย
-            const thaiDate = new Date(data.app_date).toLocaleDateString('th-TH', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
+    const thaiDate = new Date(data.app_date).toLocaleDateString('th-TH', { 
+        year: 'numeric', month: 'long', day: 'numeric' 
+});
 
-            document.getElementById('cardContent').innerHTML = `
-                <div class="info-row"><span class="label">ชื่อ-นามสกุล:</span> <span class="value">${data.firstname} ${data.lastname}</span></div>
-                <div class="info-row"><span class="label">อายุ:</span> <span class="value">${data.age} ปี</span></div>
-                <div class="info-row"><span class="label">ผู้นัดพบ:</span> <span class="value">${data.doctor_name || 'ไม่ระบุ'}</span></div>
-                <div class="info-row"><span class="label">วันที่นัดหมาย:</span> <span class="value">${thaiDate}</span></div>
-                <div class="info-row"><span class="label">เวลานัดหมาย:</span> <span class="value">${data.app_time.substring(0, 5)} น.</span></div>
-                <div class="info-row"><span class="label">สถานที่:</span> <span class="value">${data.location}</span></div>
-                <div class="info-row"><span class="label">อาการ/โรคประจำตัว:</span> <span class="value">${data.congenital_disease || 'ไม่มี'}</span></div>
-                <div class="info-row"><span class="label">หมายเหตุ:</span> <span class="value">${data.note || 'ไม่มี'}</span></div>
+//แสดงข้อมูลลงใน Card
+    document.getElementById('cardContent').innerHTML = `
+    <div class="info-row"><span class="label">ชื่อ-นามสกุล:</span> <span class="value">${data.firstname} ${data.lastname}</span></div>
+    <div class="info-row"><span class="label">อายุ:</span> <span class="value">${data.age} ปี</span></div>
+    <div class="info-row"><span class="label">ผู้นัดพบ:</span> <span class="value">${data.doctor_name || 'ไม่ระบุ'}</span></div>
+    <div class="info-row"><span class="label">วันที่นัดหมาย:</span> <span class="value">${thaiDate}</span></div>
+    <div class="info-row"><span class="label">เวลานัดหมาย:</span> <span class="value">${data.app_time.substring(0, 5)} น.</span></div>
+    <div class="info-row"><span class="label">สถานที่:</span> <span class="value">${data.location}</span></div>
+    <div class="info-row"><span class="label">อาการ/โรคประจำตัว:</span> <span class="value">${data.congenital_disease || 'ไม่มี'}</span></div>
+    <div class="info-row"><span class="label">หมายเหตุ:</span> <span class="value">${data.note || 'ไม่มี'}</span></div>
             `;
-        } catch (error) {
-            console.error('เกิดข้อผิดพลาด:', error);
-            document.getElementById('cardContent').innerHTML = '<p class="error-text">ไม่พบข้อมูลใบนัดหมาย (API Error)</p>';
-        }
-    } else {
-
-        console.warn('ID นัดหมายไม่ถูกต้อง:', appId);
-        document.getElementById('cardContent').innerHTML = '<p class="error-text">ไม่พบรหัสการนัดหมาย กรุณาลองใหม่อีกครั้ง</p>';
+} catch (error) {
+    console.error('เกิดข้อผิดพลาด:', error);
+    document.getElementById('cardContent').innerHTML = '<p class="error-text">ไม่พบข้อมูลใบนัดหมาย</p>';
     }
+} else {
+    console.warn('ID นัดหมายไม่ถูกต้อง:', appId);
+    document.getElementById('cardContent').innerHTML = '<p class="error-text">ไม่พบรหัสการนัดหมาย กรุณาลองใหม่อีกครั้ง</p>';
+}
 };

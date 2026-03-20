@@ -4,10 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ลงทะเบียนผู้ป่วย - ระบบโรงพยาบาล</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+<header class="hospital-header">
+    <div class="header-content">
+        <div class="icon-box">
+            <i class="fa-solid fa-hospital"></i>
+        </div>
+        <div class="hospital-info">
+            <h1 class="hospital-name-th">โรงพยาบาลพรีเมียมพลาซ่า</h1>
+            <p class="hospital-name-en">PREMIUM PLAZA HOSPITAL</p>
+        </div>
+    </div>
+</header>
+
     <div class="container">
         <nav class="top-nav">
             <a href="registration.html" class="nav-btn active">บันทึกคนไข้</a>
@@ -63,7 +76,7 @@
 
         <div class="form-group">
             <label>ระบุโรคประจำตัวผู้ป่วย</label>
-            <div class="disease-grid"> 
+            <div class="disease-grid">
                 <div><input name="congenital_disease" type="checkbox" value="ไม่มี" onchange="handleCheckboxChange(this)"> ไม่มี</div>
                 <div><input name="congenital_disease" type="checkbox" value="โรคความดันโลหิต" onchange="handleCheckboxChange(this)"> โรคความดันโลหิต</div>
                 <div><input name="congenital_disease" type="checkbox" value="โรคเบาหวาน" onchange="handleCheckboxChange(this)"> โรคเบาหวาน</div>

@@ -1,43 +1,137 @@
-/* =========================================
-   [0] CUSTOM SCROLLBAR
-   ========================================= */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #f1f5f9; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+/* ==========================================================================
+   [0] การตั้งค่าตัวแปรหลัก (เปลี่ยนสีธีมทั้งเว็บที่นี่)
+   ========================================================================== */
+:root {
+    --primary: #4f46e5;            /* สีม่วงหลัก */
+    --primary-hover: #4338ca;      /* สีม่วงตอนเอาเมาส์ชี้ */
+    --primary-soft: #f0f4ff;       /* สีม่วงอ่อน (พื้นหลังไอเทม) */
+    --danger: #ef4444;             /* สีแดง (ปุ่มลบ/Error) */
+    --success: #10b981;            /* สีเขียว (ปุ่มบันทึก) */
+    --warning: #f59e0b;            /* สีส้ม (แจ้งเตือน) */
+    --white: #ffffff;
+    --text-dark: #1e293b;          /* สีตัวอักษรเข้ม */
+    --radius-lg: 20px;             /* ความโค้งของมุมต่างๆ */
+}
 
-/* =========================================
-   [1] GLOBAL SETTINGS
-   ========================================= */
+/* ==========================================================================
+   [1] ตั้งค่าพื้นฐาน (ฟอนต์, พื้นหลังเว็บ, Scrollbar)
+   ========================================================================== */
 * {
     box-sizing: border-box;
     font-family: 'Kanit', sans-serif;
 }
 
 body {
-    background: #f0f2f5;
+    background: #f0f2f5;          /* สีพื้นหลังของหน้าเว็บด้านนอกกล่อง */
+    color: #1e293b;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
     padding: 20px;
-    color: #1e293b;
 }
 
+/* แถบเลื่อนด้านข้าง (Scrollbar) */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+
+
+/* [1] แก้ไขจุดที่ทำให้หน้าเบี้ยว */
+body {
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: block !important; 
+    width: 100%;
+}
+
+/* [2] ส่วนหัวโรงพยาบาล (Hospital Header) */
+.hospital-header {
+    background-color: #ffffff;
+    padding: 20px 0;               /* ลด padding ลงนิดหน่อยให้ดูไม่เทอะทะ */
+    border-bottom: 2px solid #f1f5f9;
+    width: 100%;
+    display: flex;
+    justify-content: center;       /* จัดกึ่งกลางหน้าจอ */
+    align-items: center;
+    margin-bottom: 30px;           /* ระยะห่างก่อนถึงเมนู */
+}
+
+/* [3] จัดระเบียบกล่องเนื้อหา (Container) ให้กลับมาอยู่ตรงกลาง */
 .container {
     background-color: #ffffff;
     padding: 40px;
     border-radius: 24px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    max-width: 750px;
-    border: 1px solid #e2e8f0;
+    margin: 0 auto 50px auto; 
+    
+    width: 95%;
+    max-width: 800px;
+    display: block; 
 }
 
-/* =========================================
-   [2] NAVIGATION & HEADERS
-   ========================================= */
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon-box {
+    background: #f0f4ff;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18px;
+    color: #4f46e5;
+    font-size: 30px;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+.hospital-info {
+    text-align: left;
+}
+
+.hospital-name-th {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+.hospital-name-en {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4f46e5;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   [2] กล่องคอนเทนเนอร์หลัก (กล่องขาวใบใหญ่)
+   ========================================================================== */
+.container {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+    width: 100%;
+    max-width: 750px;
+}
+
+/* ==========================================================================
+   [3] เมนูนำทาง (แถบปุ่มด้านบนสุด)
+   ========================================================================== */
 .top-nav {
     display: flex;
     justify-content: center;
@@ -48,7 +142,7 @@ body {
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(79, 70, 229, 0.1); 
     border: 1px solid #eef2f6;
-    position: sticky;
+    position: sticky;             /* ให้เมนูติดขอบบนเวลาเลื่อนจอ */
     top: 10px;
     z-index: 100;
 }
@@ -69,13 +163,16 @@ body {
     transform: translateY(-2px);
 }
 
-.nav-btn.active {
+.nav-btn.active {                 /* สถานะปุ่มที่กำลังใช้งานอยู่ */
     background: linear-gradient(135deg, #6366f1, #4f46e5);
     color: #ffffff !important;
     box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
 }
 
-.header {
+/* ==========================================================================
+   [4] ส่วนประกอบฟอร์ม (ช่องกรอกข้อมูล, Label, Select)
+   ========================================================================== */
+.header {                        /* หัวข้อใหญ่ของแต่ละหน้า */
     font-size: 30px;
     font-weight: 800;
     text-align: center;
@@ -83,12 +180,9 @@ body {
     color: #1e293b;
 }
 
-/* =========================================
-   [3] FORM ELEMENTS
-   ========================================= */
 .form-group { margin-bottom: 28px; }
 
-.form-group label {
+.form-group label {               /* ชื่อหัวข้อบนช่องกรอก */
     display: block;
     margin-bottom: 12px;
     font-weight: 600;
@@ -96,7 +190,13 @@ body {
     font-size: 15px;
 }
 
-.form-control, input[type="text"], input[type="date"], textarea, select, #searchInput {
+/* ช่องกรอกข้อมูลทุกประเภท */
+.form-control, 
+input[type="text"], 
+input[type="date"], 
+textarea, 
+select, 
+#searchInput {
     width: 100%;
     padding: 14px 18px;
     border: 1.5px solid #e2e8f0;
@@ -105,6 +205,7 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ตอนคลิกเข้าไปที่ช่องกรอก */
 .form-control:focus, #searchInput:focus {
     border-color: #4f46e5;
     background-color: #f8faff;
@@ -113,6 +214,7 @@ body {
     transform: translateY(-1px);
 }
 
+/* กล่องตัวเลือกเพศ หรือตารางโรคประจำตัว */
 .option-group, .disease-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
@@ -123,35 +225,46 @@ body {
     border: 1px solid #e2e8f0;
 }
 
-/* จัดการช่อง Select */
+/* การตั้งค่าลูกศรในช่อง Select */
 select {
     appearance: none;
     -webkit-appearance: none;
-    -moz-appearance: none;
     cursor: pointer;
     padding-right: 40px !important;
-    
     background-image: url('../images/arrow-down.svg'); 
     background-repeat: no-repeat;
     background-position: calc(100% - 15px) center;
     background-size: 14px;
 }
 
-select:focus {
-    background-image: url('../images/arrow-down-focus.svg');
+/* ส่วนแสดงข้อผิดพลาดเฉพาะจุด */
+.input-error {
+    border: 2px solid #ff4d4d !important;    /* ขอบสีแดงเข้ม */
+    background-color: #fff5f5 !important;    /* พื้นหลังสีแดงอ่อนๆ */
+    box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1) !important;
 }
+
+/* เอฟเฟกต์สั่นเบาๆ เวลาขึ้น Error */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+
+.shake {
+    animation: shake 0.2s ease-in-out 0s 2;
+}
+
 
 textarea {
     min-height: 120px;
-    resize: vertical;
-    max-width: 100%;
-    overflow-y: auto;
+    resize: vertical;             /* ให้ดึงขยายความสูงได้ */
 }
 
-/* =========================================
-   [4] SEARCH & NOTIFICATION
-   ========================================= */
-.search-wrapper {
+/* ==========================================================================
+   [5] ส่วนค้นหา และ กล่องแจ้งเตือน Error
+   ========================================================================== */
+.search-wrapper {                 /* แถบสีพื้นหลังรอบๆ ช่องค้นหา */
     background: #f8fafc;
     padding: 20px;
     border-radius: 16px;
@@ -162,115 +275,63 @@ textarea {
 .input-group { position: relative; width: 100%; }
 #searchInput { padding-left: 45px !important; }
 
-.search-icon {
+.search-icon {                    /* ไอคอนแว่นขยาย */
     position: absolute;
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
     color: #94a3b8;
-    font-size: 18px;
 }
 
-.hidden { display: none !important; }
-
+/* กล่องแจ้งเตือนสีแดง (Validation) */
 .error-box {
     color: #e11d48 !important;
     background-color: #fff1f2 !important;
     padding: 25px 35px;
     border-radius: 16px;
     border: 2px solid #fecdd3 !important;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin: 25px 0;
     font-size: 15px;
-    
-    text-align: left !important; 
 }
 
-.error-box ul {
-    margin: 10px 0 0 20px;
-    padding: 0;
+.search-wrapper {                 /* แถบสีพื้นหลังรอบๆ ช่องค้นหา */
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #e2e8f0;
 }
 
-.error-box li {
-    margin-bottom: 8px;
+.input-group { position: relative; width: 100%; }
+#searchInput { padding-left: 45px !important; }
+
+.search-icon {                    /* ไอคอนแว่นขยาย */
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
 }
 
-/* =========================================
-   GLOBAL VARIABLES
-   ========================================= */
-:root {
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --primary-soft: #f0f4ff;
-    --danger: #ef4444;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --white: #ffffff;
-    --text-dark: #1e293b;
-    --radius-lg: 20px;
+/* กล่องแจ้งเตือนสีแดง (Validation) */
+.error-box {
+    color: #e11d48 !important;
+    background-color: #fff1f2 !important;
+    padding: 25px 35px;
+    border-radius: 16px;
+    border: 2px solid #fecdd3 !important;
+    margin: 25px 0;
+    font-size: 15px;
 }
 
-/* =========================================
-   SWEETALERT2 CUSTOM
-   ========================================= */
-
-.swal2-popup {
-    border-radius: var(--radius-lg) !important;
-    font-family: 'Kanit', sans-serif !important;
-    padding: 2em !important;
+/* ใส่ไว้ล่างสุดของไฟล์ CSS ก็ได้ครับ */
+.hidden {
+    display: none !important;
 }
 
-.swal2-confirm {
-    background-color: var(--primary) !important;
-    background: linear-gradient(135deg, #6366f1, var(--primary)) !important;
-    border-radius: 12px !important;
-    padding: 12px 30px !important;
-    font-weight: 600 !important;
-    transition: all 0.3s !important;
-}
-
-.swal2-confirm:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3) !important;
-}
-
-.swal2-confirm:hover, 
-.swal2-cancel:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
-    filter: brightness(1.1);
-}
-
-.swal2-confirm:active, 
-.swal2-cancel:active {
-    transform: translateY(-1px) scale(0.98) !important;
-    transition: all 0.1s !important;
-}
-
-.swal2-cancel {
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
-
-.swal2-cancel {
-    background-color: var(--danger) !important;
-    border-radius: 12px !important;
-    padding: 12px 30px !important;
-    font-weight: 600 !important;
-}
-
-.swal2-icon.swal2-warning {
-    border-color: var(--warning) !important;
-    color: var(--warning) !important;
-}
-
-.swal2-icon.swal2-success {
-    border-color: var(--success) !important;
-    color: var(--success) !important;
-}
-
-/* =========================================
-   [5] LIST ITEMS (อัปเกรดให้อ่านง่ายขึ้นจ๊ะ)
-   ========================================= */
+/* ==========================================================================
+   [6] รายการไอเทม (หน้าแสดงชื่อผู้ป่วย และ ตารางนัดหมาย)
+   ========================================================================== */
 .user-item, .appointment-item {
     background: #ffffff;
     padding: 15px 25px;
@@ -285,36 +346,27 @@ textarea {
 }
 
 .user-item:hover, .appointment-item:hover {
-    transform: translateX(5px);
+    transform: translateX(5px);   /* ให้ขยับขวานิดๆ ตอนเมาส์ชี้ */
     border-color: #4f46e5;
-    box-shadow: 0 5px 15px rgba(79, 70, 229, 0.08);
 }
 
-.user-item span, .appointment-item span, .app-info {
+/* ตัวหนังสือในแต่ละแถว */
+.user-item span, .appointment-item span {
     font-size: 16px !important;
-    line-height: 1.8;
     color: #334155;
-    font-weight: 400;
 }
 
-.user-item strong, .appointment-item strong, .app-info strong {
-    font-weight: 600 !important;
-    letter-spacing: 0.5px;
+/* ตัวหนังสือหนา (เช่น ชื่อ-นามสกุล ในรายการ) */
+.user-item strong, .appointment-item strong {
     color: #4f46e5;
     background: #f0f4ff;
     padding: 2px 8px;
     border-radius: 8px;
-    margin: 0 4px;
 }
 
-.edit-btn, .delete-btn, .print-btn-small {
-    padding: 6px 12px !important;
-    font-size: 13px !important;
-}
-
-/* =========================================
-   [6] BUTTONS & ACTIONS 
-   ========================================= */
+/* ==========================================================================
+   [7] ปุ่มกด และ การจัดการ (Submit, Edit, Delete)
+   ========================================================================== */
 .form-actions { display: flex; justify-content: center; gap: 15px; margin-top: 40px; }
 
 /* กลุ่มปุ่มหลัก (ปุ่มใหญ่) */
@@ -364,60 +416,17 @@ textarea {
     transition: all 0.1s;
 }
 
-/* =========================================
-   [7] PRINT SETTINGS
-   ========================================= */
-@media print {
-    .top-nav, 
-    .form-actions, 
-    .search-wrapper, 
-    .button-group, 
-    .print-actions, 
-    .back-link,
-    button { 
-        display: none !important; 
-    }
-
-    body { 
-        background: white !important; 
-        padding: 0 !important; 
-        margin: 0 !important; 
-    }
-
-    .container { 
-        box-shadow: none !important; 
-        border: none !important; 
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    html, body {
-        height: auto;
-        overflow: hidden;
-    }
-
-    .card-content {
-        border: 2px solid #363636 !important;
-        background: white !important;
-        margin: 0 !important;
-        page-break-inside: avoid
-    }
-}
-
-/* =========================================
-   [8] APPOINTMENT CARD
-   ========================================= */
-.card-content {
+/* ==========================================================================
+   [8] การ์ดนัดหมาย และ การตั้งค่าหน้าพิมพ์ (Print)
+   ========================================================================== */
+.card-content {                   /* ตัวการ์ดที่โชว์ใบนัด */
     background: #f8fafc;
-    border: 2px dashed #cbd5e1;
+    border: 2px dashed #cbd5e1;   /* เส้นประขอบการ์ด */
     border-radius: 20px;
     padding: 35px;
-    margin: 25px 0;
 }
 
-.info-row {
+.info-row {                       /* แถวข้อมูลในใบนัด (ชื่อ: ค่าข้อมูล) */
     display: flex;
     justify-content: space-between;
     padding: 18px 0;
@@ -425,61 +434,97 @@ textarea {
 }
 
 .print-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
+    display: flex;            /* เปิดการใช้งาน Flexbox */
+    flex-direction: column;    /* ✨ เปลี่ยนการเรียงตัวให้เป็นแนวตั้ง (บนลงล่าง) */
+    align-items: center;       /* จัดให้อยู่กึ่งกลางแนวนอน */
+    justify-content: center;   /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+    gap: 15px;                 /* ระยะห่างระหว่างปุ่มบนกับล่าง */
+    margin-top: 50px;          /* ระยะห่างจากขอบล่างของใบนัด */
+    width: 100%;
 }
 
 .print-btn {
-    min-width: 200px;
-    text-align: center;
+    background: linear-gradient(135deg, #021b79, #0575e6);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
 }
 
-/* =========================================
-   [CONNECT PAGE]
-   ========================================= */
-
-.connect-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: var(--bg-body);
-    margin: 0;
-    font-family: 'Kanit', sans-serif;
+.print-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(2, 27, 121, 0.2);
 }
 
+/* ตกแต่งปุ่มกลับ (Link) ให้ดูอ่านง่ายขึ้น */
+.back-link {
+    text-decoration: none;
+    color: #64748b;           /* สีเทาๆ จะได้ไม่เด่นกว่าปุ่มปริ้น */
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+    margin-top: 20px; 
+    transition: all 0.3s;
+}
+
+.back-link:hover {
+    color: #4f46e5;           /* เปลี่ยนเป็นสีม่วงตอนเอาเมาส์ชี้ */
+    text-decoration: underline;
+}
+
+/* การตั้งค่าเวลาสั่งพิมพ์ทางเครื่องพิมพ์ */
+@media print {
+    .top-nav, 
+    .form-actions, 
+    .search-wrapper, 
+    .button-group, 
+    .print-actions, 
+    .back-link, 
+    button { 
+        display: none !important; 
+    }
+
+    /* ส่วนอื่นๆ คงเดิม */
+    .container { 
+        box-shadow: none !important; 
+        border: none !important; 
+        width: 100% !important; 
+    }
+}
+
+/* ==========================================================================
+   [9] ปรับแต่ง Pop-up ของ SweetAlert2
+   ========================================================================== */
+.swal2-popup {
+    border-radius: var(--radius-lg) !important;
+    font-family: 'Kanit', sans-serif !important;
+}
+
+.swal2-confirm {                  /* ปุ่มยืนยันใน Pop-up */
+    background: linear-gradient(135deg, #6366f1, var(--primary)) !important;
+    border-radius: 12px !important;
+}
+
+.swal2-cancel {                   /* ปุ่มยกเลิกใน Pop-up */
+    background-color: var(--danger) !important;
+    border-radius: 12px !important;
+}
+
+/* ==========================================================================
+   [10] หน้าเชื่อมต่อระบบ (Connect Page)
+   ========================================================================== */
 .connect-card {
     background: #ffffff;
     padding: 3.5rem 2.5rem;
     border-radius: 24px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
     text-align: center;
     max-width: 520px;
-    width: 90%;
-    border: 2px solid #f1f5f9;
 }
 
-#status-title.status-success {
+#status-title.status-success {    /* ข้อความเวลาเชื่อมต่อสำเร็จ */
     color: var(--success);
     font-size: 2rem;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-}
-
-#result-box.connect-result {
-    color: var(--text-dark);
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-}
-
-#result-box strong {
-    color: var(--primary);
-    font-size: 1.2rem;
-    margin: 0 3px;
 }

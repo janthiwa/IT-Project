@@ -1,52 +1,53 @@
 const BASE_URL = 'http://localhost:8000/api';
-
 window.onload = async () => {
     await loadData();
 
-    // --- ระบบค้นหา (Search System) ---
-    const searchInput = document.getElementById('searchInput');
-    const noDataMsg = document.getElementById('noDataMessage');
-
-    if (searchInput) {
-        searchInput.addEventListener('keyup', function() {
-            const val = this.value.trim().toLowerCase();
-            
-
-            const items = document.querySelectorAll('.user-item');
-            let hasVisibleItem = false;
+//ระบบค้นหา
+const searchInput = document.getElementById('searchInput');
+const noDataMsg = document.getElementById('noDataMessage');
 
 
-            if (val === "") {
-                items.forEach(item => item.classList.remove('hidden'));
-                if (noDataMsg) noDataMsg.classList.add('hidden');
-                return;
-            }
+if (noDataMsg) noDataMsg.classList.add('hidden');
 
-            const keywords = val.split(/\s+/);
-            items.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                const isMatch = keywords.every(kw => text.includes(kw));
-                
-                if (isMatch) {
-                    item.classList.remove('hidden');
-                    hasVisibleItem = true;
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
+if (searchInput) {
+searchInput.addEventListener('keyup', function() {
+    const val = this.value.trim().toLowerCase();
+    const items = document.querySelectorAll('.user-item');
+    let hasVisibleItem = false;
 
-            if (noDataMsg) {
-                if (!hasVisibleItem) {
-                    noDataMsg.classList.remove('hidden');
-                } else {
-                    noDataMsg.classList.add('hidden');
-                }
-            }
-        });
-    }
+ // 1. ถ้าช่องค้นหาว่างเปล่า
+if (val === "") {
+    items.forEach(item => item.classList.remove('hidden'));
+    if (noDataMsg) noDataMsg.classList.add('hidden');
+    return;
 }
 
-// --- ฟังก์ชันโหลดรายชื่อผู้ป่วย ---
+// 2. ถ้ามีการพิมพ์ค้นหา
+const keywords = val.split(/\s+/);
+    items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    const isMatch = keywords.every(kw => text.includes(kw));
+
+    if (isMatch) {
+        item.classList.remove('hidden');
+        hasVisibleItem = true;
+    } else {
+        item.classList.add('hidden');
+    }
+});
+
+    if (noDataMsg) {
+    if (!hasVisibleItem) {
+        noDataMsg.classList.remove('hidden');
+} else {
+    noDataMsg.classList.add('hidden');
+            }
+        }
+    });
+}
+}
+
+//ฟังก์ชันโหลดรายชื่อผู้ป่วย
 const loadData = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/users`);
@@ -58,11 +59,11 @@ const loadData = async () => {
             return;
         }
 
-        response.data.forEach((user) => {
+    response.data.forEach((user) => {
             const div = document.createElement('div');
             div.className = 'user-item';
             const formattedHN = `HN-${user.id.toString().padStart(4, '0')}`;
-            
+
             div.innerHTML = `
                 <span><strong>รหัสผู้ป่วย:</strong> ${formattedHN} | <strong>ชื่อ:</strong> ${user.firstname} ${user.lastname}</span>
                 <div class="button-group">
@@ -74,11 +75,12 @@ const loadData = async () => {
         });
     } catch (error) {
         console.error('โหลดข้อมูลไม่สำเร็จ:', error);
-        document.getElementById('user').innerHTML = '<div class="error-box">เกิดข้อผิดพลาดในการดึงข้อมูล เช็ก Server</div>';
+        document.getElementById('user').innerHTML = '<div class="error-box">เกิดข้อผิดพลาดในการดึงข้อมูล</div>';
     }
 };
 
-// --- ฟังก์ชันลบผู้ป่วย ---
+
+//ฟังก์ชันลบผู้ป่วย
 const deleteUser = async (id) => {
     const result = await Swal.fire({
         title: 'คุณแน่ใจนะว่าจะลบ?',
@@ -92,13 +94,13 @@ const deleteUser = async (id) => {
     if (result.isConfirmed) {
         try {
             await axios.delete(`${BASE_URL}/users/${id}`);
-            
+
             await Swal.fire({
                 title: 'ลบเรียบร้อย!',
                 icon: 'success'
             });
 
-            await loadData(); 
+            await loadData();
         } catch (error) {
             Swal.fire({
                 title: 'ลบไม่สำเร็จ',

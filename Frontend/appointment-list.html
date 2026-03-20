@@ -4,10 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ตารางนัดหมายผู้ป่วย - ระบบโรงพยาบาล</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+<header class="hospital-header">
+    <div class="header-content">
+        <div class="icon-box">
+            <i class="fa-solid fa-hospital"></i>
+        </div>
+        <div class="hospital-info">
+            <h1 class="hospital-name-th">โรงพยาบาลพรีเมียมพลาซ่า</h1>
+            <p class="hospital-name-en">PREMIUM PLAZA HOSPITAL</p>
+        </div>
+    </div>
+</header>
+
     <div class="container"> 
         <nav class="top-nav">
             <a href="registration.html" class="nav-btn">บันทึกผู้ป่วย</a>
@@ -21,8 +34,8 @@
         <div class="search-wrapper">
             <label for="searchInput" class="search-label">ค้นหาข้อมูล:</label>
             <div class="input-group">
-                <input type="text" id="searchInput" placeholder="พิมรหัสผู้ป่วย HN-0048...">
-                <i class="search-icon">🔍</i>
+                <input type="text" id="searchInput" placeholder="พิมพ์รหัสผู้ป่วย HN-0048...">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
             </div>
         </div>
 
