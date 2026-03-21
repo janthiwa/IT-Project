@@ -4,25 +4,23 @@ await loadAppointments();
     const searchInput = document.getElementById('searchInput');
     const noDataMsg = document.getElementById('noDataMessage');
 
-//ตั้งค่าระบบการค้นหา
 if (searchInput) {
         searchInput.addEventListener('keyup', function() {
     const val = this.value.trim().toLowerCase();
     const items = document.querySelectorAll('.appointment-item');
     let hasVisibleItem = false;
 
-// กรณีช่องค้นหาว่าง ให้แสดงรายการทั้งหมด
+
     if (val === "") {
         items.forEach(item => item.classList.remove('hidden'));
     if (noDataMsg) noDataMsg.classList.add('hidden');
     return;
 }
 
-// แยกคำค้นหาด้วยช่องว่าง (ถ้าพิมพ์หลายคำ)
     const keywords = val.split(/\s+/);
     items.forEach(item => {
     const text = item.textContent.toLowerCase();
-// ตรวจสอบว่าในรายการมีคำที่ตรงกับคำค้นหาทุกคำมั้ย
+
     const isMatch = keywords.every(kw => text.includes(kw));
                 
     if (isMatch) {
@@ -33,7 +31,6 @@ if (searchInput) {
     }
 });
 
-// แสดงหรือซ่อนข้อความ "ไม่พบข้อมูล" ตามผลลัพธ์การค้นหา
     if (noDataMsg) {
     if (!hasVisibleItem) {
         noDataMsg.classList.remove('hidden');
@@ -45,7 +42,6 @@ if (searchInput) {
 }
 };
 
-//ฟังก์ชันสำหรับโหลดข้อมูลนัดหมายทั้งหมดจาก Database
     const loadAppointments = async () => {
 try {
     const response = await axios.get(`${BASE_URL}/appointments`);
@@ -69,9 +65,9 @@ const div = document.createElement('div');
     div.innerHTML = `
     <div class="app-info">
         <strong>ใบสั่งนัดเลขที่:</strong> ${app.id} <br> 
-        <strong>รหัสคนไข้:</strong> ${formattedHN} <br> 
-        <strong>คนไข้:</strong> ${app.firstname} ${app.lastname} <br>
-        <strong>หมอ:</strong> ${app.doctor_name} <br>
+        <strong>รหัสผู้ป่วย:</strong> ${formattedHN} <br> 
+        <strong>ชื่อผู้ป่วย:</strong> ${app.firstname} ${app.lastname} <br>
+        <strong>ผู้นัดพบ:</strong> ${app.doctor_name} <br>
         <strong>วันที่:</strong> ${thaiDate} | <strong>เวลา:</strong> ${app.app_time} น. <br>
         <strong>สถานที่:</strong> ${app.location}
     </div> 
@@ -88,7 +84,7 @@ const div = document.createElement('div');
     }
 };
 
-//ฟังก์ชันสำหรับยกเลิกรายการนัดหมาย
+
     const deleteAppointment = async (id) => {
     const result = await Swal.fire({
         title: 'ยืนยันการยกเลิกนัด?',
@@ -121,7 +117,7 @@ try {
 }
 };
 
-//ฟังก์ชันสำหรับส่งผู้ใช้ไปยังหน้าพิมพ์ใบนัดหมาย
+
 const goToPrintCard = (id) => {
     window.location.href = `card.html?id=${id}`;
 };

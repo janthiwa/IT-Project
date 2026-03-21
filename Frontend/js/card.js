@@ -15,7 +15,6 @@ window.onload = async () => {
 //แสดงข้อมูลลงใน Card
     document.getElementById('cardContent').innerHTML = `
     <div class="info-row"><span class="label">ชื่อ-นามสกุล:</span> <span class="value">${data.firstname} ${data.lastname}</span></div>
-    <div class="info-row"><span class="label">อายุ:</span> <span class="value">${data.age} ปี</span></div>
     <div class="info-row"><span class="label">ผู้นัดพบ:</span> <span class="value">${data.doctor_name || 'ไม่ระบุ'}</span></div>
     <div class="info-row"><span class="label">วันที่นัดหมาย:</span> <span class="value">${thaiDate}</span></div>
     <div class="info-row"><span class="label">เวลานัดหมาย:</span> <span class="value">${data.app_time.substring(0, 5)} น.</span></div>

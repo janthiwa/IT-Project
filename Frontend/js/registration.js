@@ -14,7 +14,7 @@ const id = urlParams.get('id');
             document.querySelector('.header').innerText = 'แก้ไขประวัติผู้ป่วย';
             document.querySelector('.submit-btn').innerText = 'ยืนยันการแก้ไขข้อมูล';
 } catch (error) {
-    console.error('ดึงข้อมูลคนไข้ล้มเหลว:', error);
+    console.error('ดึงข้อมูลผู้ป่วยล้มเหลว:', error);
         }
     }
 };
@@ -77,7 +77,7 @@ window.submitData = async () => {
 
 messageDOM.innerHTML = `
         <div class="success-box">
-                <span style="font-size: 20px;">✨</span> ${successMessage}
+                <span style="font-size: 20px;"></span> ${successMessage}
                 <p style="font-size: 14px; margin-top: 5px; font-weight: 400;">ระบบกำลังพากลับหน้ารายชื่อ...</p>
             </div>`;
 messageDOM.classList.add('show');
