@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Form - ระบบนัดหมาย</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="hospital-header">
+    <div class="header-content">
+        <div class="icon-box">
+            <i class="fa-solid fa-hospital"></i>
+        </div>
+        <div class="hospital-info">
+            <h1 class="hospital-name-th">โรงพยาบาลพรีเมียมพลาซ่า</h1>
+            <p class="hospital-name-en">PREMIUM PLAZA HOSPITAL</p>
+        </div>
+    </div>
+</header>
+
+    <div class="container">
+        <nav class="top-nav">
+            <a href="registration.html" class="nav-btn">บันทึกผู้ป่วย</a>
+            <a href="user.html" class="nav-btn">รายชื่อผู้ป่วย</a>
+            <a href="appointment-list.html" class="nav-btn">ตารางนัดหมาย</a>
+            <a href="appointment.html" class="nav-btn active">ลงใบนัดหมายใหม่</a>
+        </nav>
+
+        <h2 class="header">ใบนัดพบแพทย์</h2>
+
+        <div id="message"></div>
+
+        <div class="form-group">
+            <label>เลือกผู้ป่วย</label>
+            <select class="form-control" id="userSelect" name="user_id">
+                <option value="">--- กรุณาเลือกผู้ป่วย ---</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>ชื่อคุณหมอ</label>
+            <input class="form-control" type="text" name="doctor_name" placeholder="ระบุชื่อแพทย์...">
+        </div>
+
+        <div class="form-group">
+            <label>วันที่นัดหมาย</label>
+            <input class="form-control" type="date" name="app_date">
+        </div>
+
+        <div class="form-group">
+            <label>เวลานัดหมาย</label>
+            <input class="form-control" type="time" name="app_time">
+        </div>
+
+        <div class="form-group">
+            <label>สถานที่นัดหมาย</label>
+            <select class="form-control" name="location" id="locationSelect" onchange="toggleOtherLocation()">
+                <option value="">--- กรุณาเลือกสถานที่นัดหมาย ---</option>
+                <option value="แผนกอายุรกรรม">แผนกอายุรกรรม (ตรวจโรคทั่วไป)</option>
+                <option value="แผนกศัลยกรรม">แผนกศัลยกรรม (ผ่าตัด/แผล)</option>
+                <option value="ห้องตรวจฉุกเฉิน">ห้องตรวจฉุกเฉิน (ER)</option>   
+                <option value="แผนกทันตกรรม">แผนกทันตกรรม (ทำฟัน)</option>
+                <option value="แผนกกุมารเวช">แผนกกุมารเวช (รักษาเด็ก)</option>
+                <option value="แผนกสูตินรีเวช">แผนกสูตินรีเวช (ตรวจภายใน/ฝากครรภ์)</option>
+                <option value="แผนกจักษุวิทยา">แผนกจักษุวิทยา (ตรวจตา)</option>
+                <option value="แผนกกายภาพบำบัด">แผนกกายภาพบำบัด</option>
+                <option value="ศูนย์ตรวจสุขภาพ">ศูนย์ตรวจสุขภาพ</option>
+                <option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>
+            </select>
+            <input type="text" id="otherLocationInput" placeholder="ระบุชื่อสถานที่นัดหมาย..." class="form-control hidden">
+        </div>
+
+        <div class="form-group">
+            <label>หมายเหตุ</label>
+            <textarea class="form-control" name="note" rows="3" placeholder="ระบุเหตุผลการนัดหมาย..."></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button id="submitBtn" class="submit-btn" onclick="submitAppointment()">ยืนยันการนัดหมาย</button>
+            <button onclick="window.location.href='registration.html'" class="next-btn">กลับไปบันทึกผู้ป่วย</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/validation.js"></script> 
+    <script src="js/appointment.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+เข้า backend
+cd backend
+
+รัน Docker
+docker-compose up -d
+
+รัน Server
+node src/server.js

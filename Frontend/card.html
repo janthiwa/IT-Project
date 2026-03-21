@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ใบนัดพบแพทย์ - โรงพยาบาลพรีเมียมพลาซ่า</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="print-body">
+
+    <header class="hospital-header">
+        <div class="header-content">
+            <div class="icon-box">
+                <i class="fa-solid fa-hospital"></i>
+            </div>
+            
+            <div class="hospital-info">
+                <h1 class="hospital-name-th">โรงพยาบาลพรีเมียมพลาซ่า</h1>
+                <p class="hospital-name-en">PREMIUM PLAZA HOSPITAL</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container appointment-card">
+        
+        <div class="card-header">
+            <div class="header-text">
+            <h1>ใบแจ้งนัดหมายพบแพทย์</h1>
+            <p>โรงพยาบาลพรีเมียมพลาซ่า | โทร. 02-xxx-xxxx</p>
+            </div>
+        </div>
+
+        <div class="card-title-section">
+            <h2 class="header">ใบนัดพบแพทย์</h2>
+        </div>
+            
+        <div id="cardContent" class="card-content">
+            <div class="loading-state">
+            <p>กำลังดึงข้อมูลใบนัดจากระบบพรีเมียม...</p>
+            </div>
+        </div>
+
+        <div class="print-actions">
+            <button class="next-btn print-btn" onclick="window.print()">พิมพ์ใบนัดหมาย</button>
+            <a href="appointment-list.html" class="back-link">กลับไปหน้าตารางนัดหมาย</a>
+        </div>
+
+        <div class="card-footer" style="margin-top: 40px; text-align: center; color: #94a3b8; font-size: 12px;">
+            <p>กรุณานำใบนัดนี้มาแสดงต่อเจ้าหน้าที่ก่อนเวลานัด 15 นาที</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/card.js"></script> 
+</body>
+</html>
